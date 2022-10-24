@@ -3,16 +3,16 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pro_course_app/app_colors.dart';
-import 'package:pro_course_app/chat_user.dart';
-import 'package:pro_course_app/loading_indicator.dart';
+import 'package:pro_course_app/const/app_colors.dart';
+import 'package:pro_course_app/model/chat_user.dart';
+import 'package:pro_course_app/Utils/loading_indicator.dart';
 import 'package:pro_course_app/provider/profile_provider.dart';
 
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'fire_base_const.dart';
-import 'text_field_constant.dart';
+import '../const/fire_base_const.dart';
+import '../const/text_field_constant.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);

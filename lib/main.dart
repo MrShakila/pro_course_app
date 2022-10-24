@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
-import 'splash_screen.dart';
+import 'view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

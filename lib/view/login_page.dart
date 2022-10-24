@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:pro_course_app/provider/auth_provider.dart';
-import 'package:pro_course_app/size.dart';
-import 'package:pro_course_app/text_field_constant.dart';
+import 'package:pro_course_app/const/size.dart';
+import 'package:pro_course_app/const/text_field_constant.dart';
 import 'package:provider/provider.dart';
 
-import 'app_colors.dart';
+import '../const/app_colors.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pro_course_app/size.dart';
+import 'package:pro_course_app/const/size.dart';
 
-import 'app_colors.dart';
+import '../const/app_colors.dart';
 
 Widget errorContainer() {
   return Container(

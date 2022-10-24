@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:pro_course_app/fire_base_const.dart';
+import 'package:pro_course_app/const/fire_base_const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'chat_messege.dart';

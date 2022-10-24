@@ -4,22 +4,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:pro_course_app/app_colors.dart';
-import 'package:pro_course_app/chat_user.dart';
-import 'package:pro_course_app/debouncer.dart';
-import 'package:pro_course_app/profile._page.dart';
+import 'package:pro_course_app/const/app_colors.dart';
+import 'package:pro_course_app/model/chat_user.dart';
+import 'package:pro_course_app/const/debouncer.dart';
+import 'package:pro_course_app/view/profile._page.dart';
 
 import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/provider/home_provider.dart';
-import 'package:pro_course_app/size.dart';
-import 'package:pro_course_app/text_field_constant.dart';
+import 'package:pro_course_app/const/size.dart';
+import 'package:pro_course_app/const/text_field_constant.dart';
 import 'package:provider/provider.dart';
 
 import 'chat_page.dart';
-import 'fire_base_const.dart';
-import 'keyboardutils.dart';
+import '../const/fire_base_const.dart';
+import '../const/keyboardutils.dart';
 
-import 'loading_indicator.dart';
+import '../Utils/loading_indicator.dart';
 import 'login_page.dart';
 
 class HomePage extends StatefulWidget {

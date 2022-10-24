@@ -9,15 +9,15 @@ import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/provider/chat_messege.dart';
 import 'package:pro_course_app/provider/chat_provider.dart';
 import 'package:pro_course_app/provider/profile_provider.dart';
-import 'package:pro_course_app/size.dart';
-import 'package:pro_course_app/text_field_constant.dart';
+import 'package:pro_course_app/const/size.dart';
+import 'package:pro_course_app/const/text_field_constant.dart';
 import 'package:provider/provider.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
-import 'app_colors.dart';
-import 'common_widget.dart';
-import 'fire_base_const.dart';
+import '../const/app_colors.dart';
+import '../Utils/common_widget.dart';
+import '../const/fire_base_const.dart';
 import 'login_page.dart';
 
 class ChatPage extends StatefulWidget {
