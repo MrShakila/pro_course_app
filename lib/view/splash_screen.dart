@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pro_course_app/const/size.dart';
-import 'package:pro_course_app/course_list.dart';
+import 'package:pro_course_app/view/main_page.dart';
 import 'package:provider/provider.dart';
 
 import '../const/app_colors.dart';
-import 'home_page.dart';
 import 'login_page.dart';
 import '../provider/auth_provider.dart';
 
@@ -30,7 +29,7 @@ class _SplashPageState extends State<SplashPage> {
     bool isLoggedIn = await authProvider.isLoggedIn();
     if (isLoggedIn) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const CourseList()));
+          context, MaterialPageRoute(builder: (context) => const MainPage()));
       return;
     }
     Navigator.pushReplacement(
