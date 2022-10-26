@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pro_course_app/course_list.dart';
 
 import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/const/size.dart';
@@ -7,7 +8,6 @@ import 'package:pro_course_app/const/text_field_constant.dart';
 import 'package:provider/provider.dart';
 
 import '../const/app_colors.dart';
-import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomePage()));
+                            builder: (context) => const CourseList()));
                   }
                 },
                 child: Image.asset('assets/images/google_login.jpg'),

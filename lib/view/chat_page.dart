@@ -207,7 +207,7 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Chatting with ${widget.peerNickname}'.trim()),
+        title: Text(widget.peerNickname.trim()),
         actions: [
           IconButton(
             onPressed: () {

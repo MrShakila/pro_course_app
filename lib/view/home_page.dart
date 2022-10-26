@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pro_course_app/const/app_colors.dart';
+import 'package:pro_course_app/course_list.dart';
 import 'package:pro_course_app/model/chat_user.dart';
 import 'package:pro_course_app/const/debouncer.dart';
 import 'package:pro_course_app/view/profile._page.dart';
@@ -22,14 +23,14 @@ import '../const/keyboardutils.dart';
 import '../Utils/loading_indicator.dart';
 import 'login_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class ChatList extends StatefulWidget {
+  const ChatList({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ChatList> createState() => _ChatListState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ChatListState extends State<ChatList> {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final ScrollController scrollController = ScrollController();
 
@@ -165,10 +166,14 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
-            title: const Text('Smart Talk'),
+            title: const Text('Pro Course App'),
             actions: [
               IconButton(
-                  onPressed: () => googleSignOut(),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return const CourseList();
+                        },
+                      )),
                   icon: const Icon(Icons.logout)),
               IconButton(
                   onPressed: () {

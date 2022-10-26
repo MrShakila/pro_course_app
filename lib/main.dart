@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Smart Talk',
+        title: 'ProAcademy Couse App',
         home: SplashPage(),
       ),
     );
