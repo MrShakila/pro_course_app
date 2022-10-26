@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'component.dart';
-import 'course_list.dart';
+import 'package:pro_course_app/Utils/util.dart';
+import 'package:pro_course_app/view/login/signup.dart';
+import 'package:provider/provider.dart';
+import '../../Utils/component.dart';
+import '../../course_list.dart';
+import '../../provider/auth_provider.dart';
+import '../main_page.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -21,40 +26,45 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    switch (authProvider.status) {
+      case Status.authenticateError:
+        Fluttertoast.showToast(msg: 'Sign in failed');
+        break;
+      case Status.authenticateCanceled:
+        Fluttertoast.showToast(msg: 'Sign in cancelled');
+        break;
+      case Status.authenticated:
+        Fluttertoast.showToast(msg: 'Sign in successful');
+        break;
+      default:
+        break;
+    }
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
           children: [
-            Opacity(
-              opacity: 0.2,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: Image.asset(
-                  "asset/pexels-guillaume-hankenne-2792025.jpg",
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Align(
+                const Align(
                   alignment: Alignment.center,
                   child: SizedBox(
                     width: 100,
                     height: 100,
-                    child: Image.asset(
-                      "asset/125.png",
-                      fit: BoxFit.fill,
+                    child: Icon(
+                      Icons.my_library_books_outlined,
+                      size: 50,
                     ),
                   ),
                 ),
                 const HeightSizedBox(),
                 Align(
                   alignment: Alignment.center,
-                  child: Text("Inspiration",
+                  child: Text("Welcome back",
                       style: GoogleFonts.lobster(
                           color: Colors.deepPurpleAccent,
                           fontSize: 30,
@@ -83,7 +93,7 @@ class _SignInState extends State<SignIn> {
                               email: _email.text, password: _password.text);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const CourseList();
+                        return const MainPage();
                       }));
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {
@@ -108,7 +118,50 @@ class _SignInState extends State<SignIn> {
                           fontWeight: FontWeight.bold),
                     )),
                   ),
-                ))
+                )),
+                const SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                    onTap: () async {
+                      bool isSuccess = await authProvider.handleGoogleSignIn();
+                      if (isSuccess) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CourseList()));
+                      }
+                    },
+                    child: Center(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(25)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Sign In with google",
+                              style: GoogleFonts.roboto(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    )),
+                const SizedBox(
+                  height: 50,
+                ),
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      UtilFunctions.navigateTo(context, const SignUp());
+                    },
+                    child: Text("Dont Have account? Lets sign in",
+                        style: GoogleFonts.roboto(
+                            color: Colors.blue,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                )
               ],
             )
           ],

@@ -1,27 +1,23 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pro_course_app/const/app_colors.dart';
-import 'package:pro_course_app/course_list.dart';
 import 'package:pro_course_app/model/chat_user.dart';
 import 'package:pro_course_app/const/debouncer.dart';
-import 'package:pro_course_app/view/profile._page.dart';
 
 import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/provider/home_provider.dart';
 import 'package:pro_course_app/const/size.dart';
-import 'package:pro_course_app/const/text_field_constant.dart';
 import 'package:provider/provider.dart';
 
-import 'chat_page.dart';
+import 'chat/chat_page.dart';
 import '../const/fire_base_const.dart';
 import '../const/keyboardutils.dart';
 
 import '../Utils/loading_indicator.dart';
-import 'login_page.dart';
+import 'login/login_page.dart';
 
 class ChatList extends StatefulWidget {
   const ChatList({Key? key}) : super(key: key);
@@ -46,89 +42,6 @@ class _ChatListState extends State<ChatList> {
   Debouncer searchDebouncer = Debouncer(milliseconds: 300);
   StreamController<bool> buttonClearController = StreamController<bool>();
   TextEditingController searchTextEditingController = TextEditingController();
-
-  Future<void> googleSignOut() async {
-    authProvider.googleSignOut();
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginPage()));
-  }
-
-  Future<bool> onBackPress() {
-    openDialog();
-    return Future.value(false);
-  }
-
-  Future<void> openDialog() async {
-    switch (await showDialog(
-        context: context,
-        builder: (BuildContext ctx) {
-          return SimpleDialog(
-            backgroundColor: AppColors.burgundy,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Exit Application',
-                  style: TextStyle(color: AppColors.white),
-                ),
-                Icon(
-                  Icons.exit_to_app,
-                  size: 30,
-                  color: Colors.white,
-                ),
-              ],
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Sizes.dimen_10),
-            ),
-            children: [
-              vertical10,
-              const Text(
-                'Are you sure?',
-                textAlign: TextAlign.center,
-                style:
-                    TextStyle(color: AppColors.white, fontSize: Sizes.dimen_16),
-              ),
-              vertical15,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SimpleDialogOption(
-                    onPressed: () {
-                      Navigator.pop(context, 0);
-                    },
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(color: AppColors.white),
-                    ),
-                  ),
-                  SimpleDialogOption(
-                    onPressed: () {
-                      Navigator.pop(context, 1);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(Sizes.dimen_8),
-                      ),
-                      padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
-                      child: const Text(
-                        'Yes',
-                        style: TextStyle(color: AppColors.spaceCadet),
-                      ),
-                    ),
-                  )
-                ],
-              )
-            ],
-          );
-        })) {
-      case 0:
-        break;
-      case 1:
-        exit(0);
-    }
-  }
 
   void scrollListener() {
     if (scrollController.offset >= scrollController.position.maxScrollExtent &&
@@ -163,76 +76,48 @@ class _ChatListState extends State<ChatList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            centerTitle: true,
-            title: const Text('Pro Course App'),
-            actions: [
-              IconButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(
-                        builder: (context) {
-                          return const CourseList();
-                        },
-                      )),
-                  icon: const Icon(Icons.logout)),
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProfilePage()));
-                  },
-                  icon: const Icon(Icons.person)),
-            ]),
-        body: WillPopScope(
-          onWillPop: onBackPress,
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  buildSearchBar(),
-                  Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: homeProvider.getFirestoreData(
-                          FirestoreConstants.pathUserCollection,
-                          _limit,
-                          _textSearch),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasData) {
-                          if ((snapshot.data?.docs.length ?? 0) > 0) {
-                            return ListView.separated(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (context, index) => buildItem(
-                                  context, snapshot.data?.docs[index]),
-                              controller: scrollController,
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(),
-                            );
-                          } else {
-                            return const Center(
-                              child: Text('No user found...'),
-                            );
-                          }
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ],
+    return Stack(
+      children: [
+        Column(
+          children: [
+            buildSearchBar(),
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: homeProvider.getFirestoreData(
+                    FirestoreConstants.pathUserCollection, _limit, _textSearch),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    if ((snapshot.data?.docs.length ?? 0) > 0) {
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) =>
+                            buildItem(context, snapshot.data?.docs[index]),
+                        controller: scrollController,
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
+                      );
+                    } else {
+                      return const Center(
+                        child: Text('No user found...'),
+                      );
+                    }
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
               ),
-              Positioned(
-                child:
-                    isLoading ? const CustomLoading() : const SizedBox.shrink(),
-              ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+        Positioned(
+          child: isLoading ? const CustomLoading() : const SizedBox.shrink(),
+        ),
+      ],
+    );
   }
 
   Widget buildSearchBar() {
@@ -324,7 +209,7 @@ class _ChatListState extends State<ChatList> {
                           peerId: userChat.id,
                           peerAvatar: userChat.photoUrl,
                           peerNickname: userChat.displayName,
-                          userAvatar: firebaseAuth.currentUser!.photoURL!,
+                          // userAvatar: firebaseAuth.currentUser!.photoURL,
                         )));
           },
           child: ListTile(

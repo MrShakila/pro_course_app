@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pro_course_app/const/size.dart';
+import 'package:pro_course_app/view/login/signin.dart';
 import 'package:pro_course_app/view/main_page.dart';
 import 'package:provider/provider.dart';
 
 import '../const/app_colors.dart';
-import 'login_page.dart';
 import '../provider/auth_provider.dart';
 
 class SplashPage extends StatefulWidget {
@@ -33,7 +33,7 @@ class _SplashPageState extends State<SplashPage> {
       return;
     }
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const LoginPage()));
+        context, MaterialPageRoute(builder: (context) => const SignIn()));
   }
 
   @override
@@ -44,7 +44,7 @@ class _SplashPageState extends State<SplashPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-              "Welcome to Smart Talk",
+              "Welcome to Proacdemy Course App",
               style: TextStyle(
                   fontWeight: FontWeight.bold, fontSize: Sizes.dimen_18),
             ),
@@ -57,7 +57,7 @@ class _SplashPageState extends State<SplashPage> {
               height: 20,
             ),
             const Text(
-              "Smartest Chat Application",
+              "Best Elearning Courers",
               style: TextStyle(
                   fontWeight: FontWeight.bold, fontSize: Sizes.dimen_18),
             ),

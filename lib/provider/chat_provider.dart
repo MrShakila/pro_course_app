@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pro_course_app/const/fire_base_const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'chat_messege.dart';
+import '../model/chat_messege_model.dart';
 
 class ChatProvider {
   final SharedPreferences prefs;
@@ -48,7 +48,7 @@ class ChatProvider {
         .doc(groupChatId)
         .collection(groupChatId)
         .doc(DateTime.now().millisecondsSinceEpoch.toString());
-    ChatMessages chatMessages = ChatMessages(
+    ChatMessagesModel chatMessages = ChatMessagesModel(
         idFrom: currentUserId,
         idTo: peerId,
         timestamp: DateTime.now().millisecondsSinceEpoch.toString(),

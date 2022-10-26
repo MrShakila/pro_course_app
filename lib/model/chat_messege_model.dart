@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../const/fire_base_const.dart';
 
-class ChatMessages {
+class ChatMessagesModel {
   String idFrom;
   String idTo;
   String timestamp;
   String content;
   int type;
 
-  ChatMessages(
+  ChatMessagesModel(
       {required this.idFrom,
       required this.idTo,
       required this.timestamp,
@@ -26,14 +26,14 @@ class ChatMessages {
     };
   }
 
-  factory ChatMessages.fromDocument(DocumentSnapshot documentSnapshot) {
+  factory ChatMessagesModel.fromDocument(DocumentSnapshot documentSnapshot) {
     String idFrom = documentSnapshot.get(FirestoreConstants.idFrom);
     String idTo = documentSnapshot.get(FirestoreConstants.idTo);
     String timestamp = documentSnapshot.get(FirestoreConstants.timestamp);
     String content = documentSnapshot.get(FirestoreConstants.content);
     int type = documentSnapshot.get(FirestoreConstants.type);
 
-    return ChatMessages(
+    return ChatMessagesModel(
         idFrom: idFrom,
         idTo: idTo,
         timestamp: timestamp,

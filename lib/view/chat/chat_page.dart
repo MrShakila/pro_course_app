@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pro_course_app/provider/auth_provider.dart';
-import 'package:pro_course_app/provider/chat_messege.dart';
+import 'package:pro_course_app/model/chat_messege_model.dart';
 import 'package:pro_course_app/provider/chat_provider.dart';
 import 'package:pro_course_app/provider/profile_provider.dart';
 import 'package:pro_course_app/const/size.dart';
@@ -15,24 +15,24 @@ import 'package:provider/provider.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
-import '../const/app_colors.dart';
-import '../Utils/common_widget.dart';
-import '../const/fire_base_const.dart';
-import 'login_page.dart';
+import '../../const/app_colors.dart';
+import '../../Utils/common_widget.dart';
+import '../../const/fire_base_const.dart';
+import '../login/login_page.dart';
 
 class ChatPage extends StatefulWidget {
   final String peerId;
   final String peerAvatar;
   final String peerNickname;
-  final String userAvatar;
+  //final String userAvatar;
 
-  const ChatPage(
-      {Key? key,
-      required this.peerNickname,
-      required this.peerAvatar,
-      required this.peerId,
-      required this.userAvatar})
-      : super(key: key);
+  const ChatPage({
+    Key? key,
+    required this.peerNickname,
+    required this.peerAvatar,
+    required this.peerId,
+    //   required this.userAvatar
+  }) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -170,8 +170,8 @@ class _ChatPageState extends State<ChatPage> {
       textEditingController.clear();
       chatProvider.sendChatMessage(
           content, type, groupChatId, currentUserId, widget.peerId);
-      scrollController.animateTo(0,
-          duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+      // scrollController.animateTo(0,
+      //     duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
     } else {
       Fluttertoast.showToast(
           msg: 'Nothing to send', backgroundColor: Colors.grey);
@@ -291,7 +291,8 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget buildItem(int index, DocumentSnapshot? documentSnapshot) {
     if (documentSnapshot != null) {
-      ChatMessages chatMessages = ChatMessages.fromDocument(documentSnapshot);
+      ChatMessagesModel chatMessages =
+          ChatMessagesModel.fromDocument(documentSnapshot);
       if (chatMessages.idFrom == currentUserId) {
         // right side (my message)
         return Column(
@@ -302,6 +303,7 @@ class _ChatPageState extends State<ChatPage> {
               children: [
                 chatMessages.type == MessageType.text
                     ? messageBubble(
+                        isSender: true,
                         chatContent: chatMessages.content,
                         color: AppColors.spaceLight,
                         textColor: AppColors.white,
@@ -322,7 +324,8 @@ class _ChatPageState extends State<ChatPage> {
                           borderRadius: BorderRadius.circular(Sizes.dimen_20),
                         ),
                         child: Image.network(
-                          widget.userAvatar,
+                          "https://thispersondoesnotexist.com/image",
+                          // widget.userAvatar,
                           width: Sizes.dimen_40,
                           height: Sizes.dimen_40,
                           fit: BoxFit.cover,
@@ -426,6 +429,7 @@ class _ChatPageState extends State<ChatPage> {
                       ),
                 chatMessages.type == MessageType.text
                     ? messageBubble(
+                        isSender: false,
                         color: AppColors.burgundy,
                         textColor: AppColors.white,
                         chatContent: chatMessages.content,

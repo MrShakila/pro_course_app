@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pro_course_app/model/user_list.dart';
 
-import '../view/home_page.dart';
-import '../view/profile._page.dart';
-import 'course_detail.dart';
+import '../view/course/course_detail.dart';
 
 class CouseMainScreen extends StatefulWidget {
   const CouseMainScreen({Key? key}) : super(key: key);
@@ -12,36 +11,11 @@ class CouseMainScreen extends StatefulWidget {
 }
 
 class _CouseMainScreenState extends State<CouseMainScreen> {
-  //   Future<bool> initBackButton() async {
-  //   Logger().d('back button pressed');
-  //   return await showDialog(
-  //         context: context,
-  //         builder: (context) => ElasticIn(
-  //           child: AlertDialog(
-  //             title: const CustomText(text: 'Exit App'),
-  //             content:
-  //                 const CustomText(text: 'Do you really want to exit an App ?'),
-  //             actions: [
-  //               ElevatedButton(
-  //                 onPressed: () => Navigator.of(context).pop(),
-  //                 child: const CustomText(text: 'No'),
-  //               ),
-  //               ElevatedButton(
-  //                 onPressed: () => Navigator.of(context).pop(true),
-  //                 child: const CustomText(text: 'Yes'),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ) ??
-  //       false;
-  // }
   int _currentIndex = 0;
   //screen List
   final List<Widget> _screens = [
     const CourseDetail(),
-    const ChatList(),
-    const ProfilePage()
+    const UserList(),
   ];
   @override
   Widget build(BuildContext context) {
