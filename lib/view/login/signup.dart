@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import '../../Utils/component.dart';
 import '../../provider/auth_provider.dart';
-import '../main_page.dart';
+import '../home_page.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -150,7 +150,7 @@ class _SignUpState extends State<SignUp> {
                           email: _email.text, password: _password.text);
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
-                      return const MainPage();
+                      return const HomePage();
                     },
                   ));
                 } on FirebaseAuthException catch (e) {

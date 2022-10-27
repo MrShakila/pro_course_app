@@ -5,6 +5,7 @@ import 'package:pro_course_app/Utils/custo_drawer.dart';
 import 'package:pro_course_app/view/chat/chat_list.dart';
 import 'package:provider/provider.dart';
 
+import '../Utils/util.dart';
 import '../admin/save_course_detail.dart';
 import '../const/app_colors.dart';
 import '../const/size.dart';
@@ -12,16 +13,17 @@ import '../const/text_field_constant.dart';
 import '../course_list.dart';
 import '../provider/auth_provider.dart';
 import '../provider/home_provider.dart';
+import 'course/add_new_course.dart';
 import 'login/login_page.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _HomePageState extends State<HomePage> {
   late AuthProvider authProvider;
   late String currentUserId;
   late HomeProvider homeProvider;
@@ -138,10 +140,7 @@ class _MainPageState extends State<MainPage> {
                 return IconButton(
                   icon: const Icon(Icons.upload),
                   onPressed: () {
-                    value.getcourses(
-                      context,
-                    );
-                    //UtilFunctions.navigateTo(context, const SaveCourseInfo());
+                    UtilFunctions.navigateTo(context, const SaveCourseInfo());
                   },
                 );
               },

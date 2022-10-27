@@ -64,8 +64,8 @@ class Course with ChangeNotifier {
     setIsLOading(false);
     AwesomeDialog(
       context: context,
-      dialogType: DialogType.ERROR,
-      animType: AnimType.BOTTOMSLIDE,
+      dialogType: DialogType.success,
+      animType: AnimType.bottomSlide,
       title: 'Sucess',
       desc: 'Book Info saved sucessfull',
       btnOkOnPress: () {},

@@ -1,13 +1,69 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pro_course_app/Utils/util.dart';
+import 'package:pro_course_app/view/course/pdfview.dart';
 
 class CourseDetail extends StatelessWidget {
-  const CourseDetail({Key? key}) : super(key: key);
+  final String id;
+
+  const CourseDetail({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection('course');
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-        body: Stack(
+        body: FutureBuilder<DocumentSnapshot>(
+      future: users.doc(id).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Text("Something went wrong");
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return const Text("Document does not exist");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
+          return DetailWidget(
+              size: size,
+              title: data['title'],
+              desc: data['description'],
+              imag: data['imageUrl'],
+              id: id,
+              star: 4.5);
+        }
+
+        return const Text("loading");
+      },
+    ));
+  }
+}
+
+class DetailWidget extends StatelessWidget {
+  final String title;
+  final String desc;
+  final String imag;
+  final double star;
+  final String id;
+  const DetailWidget({
+    Key? key,
+    required this.size,
+    required this.title,
+    required this.desc,
+    required this.imag,
+    required this.id,
+    required this.star,
+  }) : super(key: key);
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
       children: [
         Container(
           width: double.infinity,
@@ -32,11 +88,11 @@ class CourseDetail extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Expanded(
+                        Expanded(
                           flex: 3,
                           child: Text(
-                            "Flutter Mobile App \nDevelopment",
-                            style: TextStyle(
+                            title,
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 25),
                           ),
                         ),
@@ -58,9 +114,9 @@ class CourseDetail extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                const Text(
-                                  "4.5",
-                                  style: TextStyle(
+                                Text(
+                                  star.toString(),
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20),
                                 )
@@ -71,14 +127,26 @@ class CourseDetail extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    const Text(
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type",
-                      style: TextStyle(
+                    Text(
+                      desc,
+                      style: const TextStyle(
                           fontWeight: FontWeight.normal, fontSize: 15),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
+                    ElevatedButton(
+                        onPressed: () {
+                          UtilFunctions.navigateTo(
+                              context,
+                              const PdfViewScreen(
+                                  url:
+                                      "https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf"));
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("Enroll Now"),
+                        )),
                     const SizedBox(
                       height: 10,
                     ),
@@ -95,6 +163,6 @@ class CourseDetail extends StatelessWidget {
               )),
         ),
       ],
-    ));
+    );
   }
 }

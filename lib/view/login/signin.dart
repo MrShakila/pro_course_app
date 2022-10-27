@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import '../../Utils/component.dart';
 import '../../course_list.dart';
 import '../../provider/auth_provider.dart';
-import '../main_page.dart';
+import '../home_page.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -93,7 +93,7 @@ class _SignInState extends State<SignIn> {
                               email: _email.text, password: _password.text);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const MainPage();
+                        return const HomePage();
                       }));
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {

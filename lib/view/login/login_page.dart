@@ -7,7 +7,7 @@ import 'package:pro_course_app/const/text_field_constant.dart';
 import 'package:provider/provider.dart';
 
 import '../../const/app_colors.dart';
-import '../main_page.dart';
+import '../home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const MainPage()));
+                            builder: (context) => const HomePage()));
                   }
                 },
                 child: Image.asset('assets/images/google_login.jpg'),

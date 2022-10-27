@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pro_course_app/course_list.dart';
 import 'package:pro_course_app/model/user_list.dart';
-
-import '../view/course/course_detail.dart';
 
 class CouseMainScreen extends StatefulWidget {
   const CouseMainScreen({Key? key}) : super(key: key);
@@ -14,7 +13,7 @@ class _CouseMainScreenState extends State<CouseMainScreen> {
   int _currentIndex = 0;
   //screen List
   final List<Widget> _screens = [
-    const CourseDetail(),
+    const CourseList(),
     const UserList(),
   ];
   @override

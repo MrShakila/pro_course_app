@@ -32,7 +32,7 @@ class SaveCourseInfo extends StatelessWidget {
               height: 20,
             ),
             const Text(
-              "Save Book Info",
+              "Save Course Details",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
             const SizedBox(
@@ -114,6 +114,11 @@ class SaveCourseInfo extends StatelessWidget {
                             price.text.isNotEmpty) {
                           value.startSaveBookInfo(context, title.text.trim(),
                               description.text.trim(), price.text.trim());
+                          title.clear();
+                          description.clear();
+                          price.clear();
+
+                          imageCache.clear();
                         } else {
                           AwesomeDialog(
                             context: context,

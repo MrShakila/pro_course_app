@@ -32,7 +32,7 @@ class _ChatListState extends State<ChatList> {
 
   int _limit = 20;
   final int _limitIncrement = 20;
-  String _textSearch = "";
+  final String _textSearch = "";
   bool isLoading = false;
 
   late AuthProvider authProvider;
@@ -80,7 +80,6 @@ class _ChatListState extends State<ChatList> {
       children: [
         Column(
           children: [
-            buildSearchBar(),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: homeProvider.getFirestoreData(
@@ -117,76 +116,6 @@ class _ChatListState extends State<ChatList> {
           child: isLoading ? const CustomLoading() : const SizedBox.shrink(),
         ),
       ],
-    );
-  }
-
-  Widget buildSearchBar() {
-    return Container(
-      margin: const EdgeInsets.all(Sizes.dimen_10),
-      height: Sizes.dimen_50,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Sizes.dimen_30),
-        color: AppColors.spaceLight,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            width: Sizes.dimen_10,
-          ),
-          const Icon(
-            Icons.person_search,
-            color: AppColors.white,
-            size: Sizes.dimen_24,
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Expanded(
-            child: TextFormField(
-              textInputAction: TextInputAction.search,
-              controller: searchTextEditingController,
-              onChanged: (value) {
-                if (value.isNotEmpty) {
-                  buttonClearController.add(true);
-                  setState(() {
-                    _textSearch = value;
-                  });
-                } else {
-                  buttonClearController.add(false);
-                  setState(() {
-                    _textSearch = "";
-                  });
-                }
-              },
-              decoration: const InputDecoration.collapsed(
-                hintText: 'Search here...',
-                hintStyle: TextStyle(color: AppColors.white),
-              ),
-            ),
-          ),
-          StreamBuilder(
-              stream: buttonClearController.stream,
-              builder: (context, snapshot) {
-                return snapshot.data == true
-                    ? GestureDetector(
-                        onTap: () {
-                          searchTextEditingController.clear();
-                          buttonClearController.add(false);
-                          setState(() {
-                            _textSearch = '';
-                          });
-                        },
-                        child: const Icon(
-                          Icons.clear_rounded,
-                          color: AppColors.greyColor,
-                          size: 20,
-                        ),
-                      )
-                    : const SizedBox.shrink();
-              })
-        ],
-      ),
     );
   }
 

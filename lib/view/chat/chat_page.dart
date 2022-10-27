@@ -13,7 +13,7 @@ import 'package:pro_course_app/const/size.dart';
 import 'package:pro_course_app/const/text_field_constant.dart';
 import 'package:provider/provider.dart';
 
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../const/app_colors.dart';
 import '../../Utils/common_widget.dart';
@@ -140,8 +140,8 @@ class _ChatPageState extends State<ChatPage> {
 
   void _callPhoneNumber(String phoneNumber) async {
     var url = 'tel://$phoneNumber';
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
     } else {
       throw 'Error Occurred';
     }
