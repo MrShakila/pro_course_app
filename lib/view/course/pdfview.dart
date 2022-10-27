@@ -39,8 +39,12 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Course Structure"),
+      ),
       body: localPath != null
           ? PDFView(
+              fitEachPage: true,
               autoSpacing: true,
               enableSwipe: true,
               filePath: localPath,

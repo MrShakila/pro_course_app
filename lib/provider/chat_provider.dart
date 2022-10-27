@@ -40,15 +40,6 @@ class ChatProvider {
         .limit(limit)
         .snapshots();
   }
-  //   Stream<QuerySnapshot> getChatMessage(String groupChatId, int limit) {
-  //   return firebaseFirestore
-  //       .collection("course")
-  //       .doc("id")
-  //       .collection(groupChatId)
-  //       .orderBy(FirestoreConstants.timestamp, descending: true)
-  //       .limit(limit)
-  //       .snapshots();
-  // }
 
   void sendChatMessage(String content, int type, String groupChatId,
       String currentUserId, String peerId) {
