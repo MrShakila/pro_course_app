@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
@@ -9,6 +10,45 @@ class CourseController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   // collection
   CollectionReference course = FirebaseFirestore.instance.collection('course');
+  User? user = FirebaseAuth.instance.currentUser;
+
+  Future<void> adduserstocourse(
+    String userid,
+    String courseid,
+  ) async {
+    //uploading the image
+    //get an online doc id
+
+    //saving book details to cloud store
+    try {
+      await FirebaseFirestore.instance
+          .collection('course')
+          .doc(courseid)
+          .collection("students")
+          .add({"user": user!.uid});
+    } on Exception catch (e) {
+      Logger().e(e);
+      // TODO
+    }
+
+    //hold
+  }
+
+  //upload picked iamge file to firebase storage
+  UploadTask? uploadFile(File img) {
+    try {
+      //getting the file name
+      final fileName = basename(img.path);
+      //define the file destination
+      final destination = 'courseImages/$fileName';
+      //create firebsse storage instance
+      final ref = FirebaseStorage.instance.ref(destination);
+      return ref.putFile(img);
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
 
   Future<void> saveCourseInfo(
     String title,
@@ -32,22 +72,6 @@ class CourseController {
     });
 
     //hold
-  }
-
-  //upload picked iamge file to firebase storage
-  UploadTask? uploadFile(File img) {
-    try {
-      //getting the file name
-      final fileName = basename(img.path);
-      //define the file destination
-      final destination = 'courseImages/$fileName';
-      //create firebsse storage instance
-      final ref = FirebaseStorage.instance.ref(destination);
-      return ref.putFile(img);
-    } catch (e) {
-      Logger().e(e);
-      return null;
-    }
   }
 
   Future<Object> getCourse() async {
