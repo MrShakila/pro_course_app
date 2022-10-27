@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/Material.dart';
-import 'package:pro_course_app/view/home_page.dart';
-import 'package:pro_course_app/view/profile._page.dart';
+import 'package:pro_course_app/Utils/custo_drawer.dart';
+import 'package:pro_course_app/view/chat/chat_list.dart';
 import 'package:provider/provider.dart';
 
+import '../admin/save_course_detail.dart';
 import '../const/app_colors.dart';
 import '../const/size.dart';
 import '../const/text_field_constant.dart';
@@ -129,26 +130,26 @@ class _MainPageState extends State<MainPage> {
     int pageIndex = 0;
 
     return Scaffold(
+        drawer: const CustomDrawer(),
         appBar: AppBar(
-            centerTitle: true,
-            title: const Text('Pro Course App'),
-            actions: [
-              IconButton(
+          actions: [
+            Consumer<Course>(
+              builder: (context, value, child) {
+                return IconButton(
+                  icon: const Icon(Icons.upload),
                   onPressed: () {
-                    setState(() {
-                      googleSignOut();
-                    });
+                    value.getcourses(
+                      context,
+                    );
+                    //UtilFunctions.navigateTo(context, const SaveCourseInfo());
                   },
-                  icon: const Icon(Icons.logout)),
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProfilePage()));
-                  },
-                  icon: const Icon(Icons.person)),
-            ]),
+                );
+              },
+            )
+          ],
+          centerTitle: true,
+          title: const Text('Pro Course App'),
+        ),
         bottomNavigationBar: BottomNavigationBar(
           items: _buildThreeItems(),
           onTap: (int index) {
@@ -186,10 +187,10 @@ class _MainPageState extends State<MainPage> {
     return const <BottomNavigationBarItem>[
       BottomNavigationBarItem(
         icon: Icon(Icons.home),
-        label: 'Course List',
+        label: 'Home Page',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.search_rounded),
+        icon: Icon(Icons.chat),
         label: 'Chat List',
       ),
     ];

@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../../admin/save_course_detail.dart';
 
-class SaveBookInfo extends StatelessWidget {
-  const SaveBookInfo({Key? key}) : super(key: key);
+class SaveCourseInfo extends StatelessWidget {
+  const SaveCourseInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

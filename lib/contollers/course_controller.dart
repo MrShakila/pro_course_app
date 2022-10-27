@@ -49,4 +49,16 @@ class CourseController {
       return null;
     }
   }
+
+  Future<Object> getCourse() async {
+    try {
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('course');
+      final snapshot = await users.doc().get();
+      final data = snapshot.data() as Map<String, dynamic>;
+      return data.entries;
+    } catch (e) {
+      return 'Error fetching user';
+    }
+  }
 }

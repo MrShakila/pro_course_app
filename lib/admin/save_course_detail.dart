@@ -76,4 +76,20 @@ class Course with ChangeNotifier {
     //   setIsLOading(false);
     // }
   }
+
+  Future<void> getcourses(
+    BuildContext context,
+  ) async {
+    // try {
+    //setloading
+    setIsLOading(true);
+    await _courseController.getCourse();
+    setIsLOading(false);
+
+    Logger().i("Course details is fetched");
+    // } catch (e) {
+    //   Logger().e(e);
+    //   setIsLOading(false);
+    // }
+  }
 }

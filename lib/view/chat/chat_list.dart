@@ -12,12 +12,12 @@ import 'package:pro_course_app/provider/home_provider.dart';
 import 'package:pro_course_app/const/size.dart';
 import 'package:provider/provider.dart';
 
-import 'chat/chat_page.dart';
-import '../const/fire_base_const.dart';
-import '../const/keyboardutils.dart';
+import 'chat_page.dart';
+import '../../const/fire_base_const.dart';
+import '../../const/keyboardutils.dart';
 
-import '../Utils/loading_indicator.dart';
-import 'login/login_page.dart';
+import '../../Utils/loading_indicator.dart';
+import '../login/login_page.dart';
 
 class ChatList extends StatefulWidget {
   const ChatList({Key? key}) : super(key: key);

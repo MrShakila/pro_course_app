@@ -1,7 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pro_course_app/Utils/util.dart';
-import 'package:pro_course_app/view/course/course_detail.dart';
 
 class CourseList extends StatefulWidget {
   const CourseList({Key? key}) : super(key: key);
@@ -10,25 +9,36 @@ class CourseList extends StatefulWidget {
   State<CourseList> createState() => _CourseListState();
 }
 
-final myProducts = List<String>.generate(1000, (i) => 'Product $i');
-
 class _CourseListState extends State<CourseList> {
   //screen List
-
+  final Stream<QuerySnapshot> _usersStream =
+      FirebaseFirestore.instance.collection('course').snapshots();
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        // the number of items in the list
-        itemCount: myProducts.length,
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Text('Something went wrong');
+        }
 
-        // display each item of the product list
-        itemBuilder: (context, index) {
-          return GestureDetector(
-              onTap: () {
-                UtilFunctions.navigateTo(context, const CourseDetail());
-              },
-              child: const CourseLisItem());
-        });
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text("Loading");
+        }
+
+        return ListView(
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
+            print(data);
+            return ListTile(
+              title: Text(data['title']),
+              subtitle: Text(data['description']),
+            );
+          }).toList(),
+        );
+      },
+    );
   }
 }
 

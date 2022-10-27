@@ -4,15 +4,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pro_course_app/admin/save_course_detail.dart';
 import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/provider/chat_provider.dart';
 import 'package:pro_course_app/provider/home_provider.dart';
 import 'package:pro_course_app/provider/profile_provider.dart';
+import 'package:pro_course_app/view/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
-import 'view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => Course(),
+        ),
         ChangeNotifierProvider<AuthProvider>(
             create: (_) => AuthProvider(
                 firebaseFirestore: firebaseFirestore,
