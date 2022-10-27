@@ -112,7 +112,7 @@ class SaveCourseInfo extends StatelessWidget {
                         if (title.text.isNotEmpty &&
                             description.text.isNotEmpty &&
                             price.text.isNotEmpty) {
-                          value.startSaveBookInfo(context, title.text.trim(),
+                          value.startSavecourseInfo(context, title.text.trim(),
                               description.text.trim(), price.text.trim());
                           title.clear();
                           description.clear();
@@ -142,7 +142,7 @@ class SaveCourseInfo extends StatelessWidget {
                             EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                         child: Center(
                           child: Text(
-                            "Save Book Info",
+                            "Save Course Info",
                             style: TextStyle(color: Colors.black),
                           ),
                         ),

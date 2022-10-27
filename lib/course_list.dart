@@ -67,7 +67,7 @@ class CourseLisItem extends StatelessWidget {
         UtilFunctions.navigateTo(
             context,
             CourseDetail(
-              id: id,
+              courseid: id,
             ));
       },
       child: Padding(

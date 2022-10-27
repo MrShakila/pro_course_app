@@ -264,36 +264,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                     ),
                     vertical15,
-                    const Text(
-                      'Select Country Code',
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.spaceCadet,
-                      ),
-                    ),
-                    // Container(
-                    //   width: double.infinity,
-                    //   alignment: Alignment.centerLeft,
-                    //   decoration: BoxDecoration(
-                    //     border: Border.all(color: Colors.black, width: 1.5),
-                    //     borderRadius: BorderRadius.circular(10),
-                    //   ),
-                    //   child: CountryCodePicker(
-                    //     onChanged: (country) {
-                    //       setState(() {
-                    //         dialCodeDigits = country.dialCode!;
-                    //       });
-                    //     },
-                    //     initialSelection: 'IN',
-                    //     showCountryOnly: false,
-                    //     showOnlyCountryWhenClosed: false,
-                    //     favorite: const ["+1", "US", "+91", "IN"],
-                    //   ),
-                    // ),
                     vertical15,
                     const Text(
-                      'Phone Number',
+                      'Change Phone Number',
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.bold,

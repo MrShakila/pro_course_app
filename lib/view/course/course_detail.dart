@@ -1,20 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pro_course_app/Utils/util.dart';
+import 'package:pro_course_app/admin/save_course_detail.dart';
 import 'package:pro_course_app/view/course/pdfview.dart';
+import 'package:provider/provider.dart';
 
-class CourseDetail extends StatelessWidget {
-  final String id;
+import '../../studentlist.dart';
 
-  const CourseDetail({Key? key, required this.id}) : super(key: key);
+class CourseDetail extends StatefulWidget {
+  final String courseid;
 
+  const CourseDetail({
+    Key? key,
+    required this.courseid,
+  }) : super(key: key);
+
+  @override
+  State<CourseDetail> createState() => _CourseDetailState();
+}
+
+class _CourseDetailState extends State<CourseDetail> {
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('course');
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: FutureBuilder<DocumentSnapshot>(
-      future: users.doc(id).get(),
+      future: users.doc(widget.courseid).get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -33,7 +45,7 @@ class CourseDetail extends StatelessWidget {
               title: data['title'],
               desc: data['description'],
               imag: data['imageUrl'],
-              id: id,
+              id: widget.courseid,
               star: 4.5);
         }
 
@@ -45,6 +57,7 @@ class CourseDetail extends StatelessWidget {
 
 class DetailWidget extends StatelessWidget {
   final String title;
+
   final String desc;
   final String imag;
   final double star;
@@ -147,17 +160,36 @@ class DetailWidget extends StatelessWidget {
                           padding: EdgeInsets.all(8.0),
                           child: Text("View More Details"),
                         )),
+                    ElevatedButton(
+                        onPressed: () {
+                          UtilFunctions.navigateTo(
+                              context,
+                              StudentLIst(
+                                courseid: id,
+                              ));
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("GOTO sTUENT LIST"),
+                        )),
                     const SizedBox(
                       height: 10,
                     ),
-                    Center(
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text("Enroll Now"),
-                          )),
-                    )
+                    Center(child: Consumer<Course>(
+                      builder: (context, value, child) {
+                        return ElevatedButton(
+                            onPressed: () {
+                              value.addNewStudentToCourse(
+                                context,
+                                id,
+                              );
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text("Enroll Now"),
+                            ));
+                      },
+                    ))
                   ],
                 ),
               )),

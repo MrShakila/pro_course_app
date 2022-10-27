@@ -9,21 +9,6 @@ import 'package:logger/logger.dart';
 import '../contollers/course_controller.dart';
 
 class Course with ChangeNotifier {
-  // ignore: prefer_final_fields
-
-  // List<Book> get books {
-  //   return [..._books];
-  // }
-
-  // void addBook(Book book) {
-  //   _books.add(book);
-  //   notifyListeners();
-  // }
-
-  // Book findById(String Id) {
-  //   return _books.firstWhere((book) => book.id == Id);
-  // }
-
   //-------------for admin
   final CourseController _courseController = CourseController();
   final ImagePicker _picker = ImagePicker();
@@ -45,20 +30,18 @@ class Course with ChangeNotifier {
       Logger().e(e);
     }
   }
-// save book info loader
+// save course info loader
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  // save book info
+  // save course info
   void setIsLOading(bool val) {
     _isLoading = val;
     notifyListeners();
   }
 
-  Future<void> startSaveBookInfo(
+  Future<void> startSavecourseInfo(
       BuildContext context, String title, String desc, String price) async {
-    // try {
-    //setloading
     setIsLOading(true);
     await _courseController.saveCourseInfo(title, desc, _image);
     setIsLOading(false);
@@ -67,29 +50,36 @@ class Course with ChangeNotifier {
       dialogType: DialogType.success,
       animType: AnimType.bottomSlide,
       title: 'Sucess',
-      desc: 'Book Info saved sucessfull',
+      desc: 'course Info saved sucessfull',
       btnOkOnPress: () {},
     ).show();
-    Logger().i("Book is Saved");
-    // } catch (e) {
-    //   Logger().e(e);
-    //   setIsLOading(false);
-    // }
+    Logger().i("course is Saved");
   }
 
-  Future<void> getcourses(
+  Future<void> addNewStudentToCourse(
+      BuildContext context, String courseid) async {
+    setIsLOading(true);
+    await _courseController.adduserstocourse(
+      courseid,
+    );
+    setIsLOading(false);
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      animType: AnimType.bottomSlide,
+      title: 'Sucess',
+      desc: 'Student Added Successfully',
+      btnOkOnPress: () {},
+    ).show();
+    Logger().i("Student Added");
+  }
+
+  Future<void> getAllcourses(
     BuildContext context,
   ) async {
-    // try {
-    //setloading
     setIsLOading(true);
     await _courseController.getCourse();
     setIsLOading(false);
-
     Logger().i("Course details is fetched");
-    // } catch (e) {
-    //   Logger().e(e);
-    //   setIsLOading(false);
-    // }
   }
 }

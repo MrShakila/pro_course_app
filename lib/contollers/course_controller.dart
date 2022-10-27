@@ -13,13 +13,12 @@ class CourseController {
   User? user = FirebaseAuth.instance.currentUser;
 
   Future<void> adduserstocourse(
-    String userid,
     String courseid,
   ) async {
     //uploading the image
     //get an online doc id
 
-    //saving book details to cloud store
+    //saving course details to cloud store
     try {
       await FirebaseFirestore.instance
           .collection('course')
@@ -63,7 +62,7 @@ class CourseController {
     final downloadUrl = await snapshot.ref.getDownloadURL();
     //get an online doc id
     String docId = course.doc().id;
-    //saving book details to cloud store
+    //saving course details to cloud store
     await course.doc(docId).set({
       'id': docId,
       'title': title,
