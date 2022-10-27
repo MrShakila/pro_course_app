@@ -145,7 +145,7 @@ class DetailWidget extends StatelessWidget {
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Text("Enroll Now"),
+                          child: Text("View More Details"),
                         )),
                     const SizedBox(
                       height: 10,
