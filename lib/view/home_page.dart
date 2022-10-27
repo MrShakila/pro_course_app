@@ -1,15 +1,12 @@
-import 'dart:io';
-
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/Material.dart';
+import 'package:logger/logger.dart';
 import 'package:pro_course_app/Utils/custo_drawer.dart';
 import 'package:pro_course_app/view/chat/chat_list.dart';
 import 'package:provider/provider.dart';
 
 import '../Utils/util.dart';
 import '../admin/save_course_detail.dart';
-import '../const/app_colors.dart';
-import '../const/size.dart';
-import '../const/text_field_constant.dart';
 import '../course_list.dart';
 import '../provider/auth_provider.dart';
 import '../provider/home_provider.dart';
@@ -34,81 +31,28 @@ class _HomePageState extends State<HomePage> {
         context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 
-  Future<bool> onBackPress() {
-    openDialog();
-    return Future.value(false);
-  }
-
-  Future<void> openDialog() async {
-    switch (await showDialog(
-        context: context,
-        builder: (BuildContext ctx) {
-          return SimpleDialog(
-            backgroundColor: AppColors.burgundy,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Exit Application',
-                  style: TextStyle(color: AppColors.white),
+  Future<bool> initBackButton() async {
+    Logger().d('back button pressed');
+    return await showDialog(
+          context: context,
+          builder: (context) => ElasticIn(
+            child: AlertDialog(
+              title: const Text('Exit App'),
+              content: const Text('Do you really want to exit ?'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('No'),
                 ),
-                Icon(
-                  Icons.exit_to_app,
-                  size: 30,
-                  color: Colors.white,
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Yes'),
                 ),
               ],
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Sizes.dimen_10),
-            ),
-            children: [
-              vertical10,
-              const Text(
-                'Are you sure?',
-                textAlign: TextAlign.center,
-                style:
-                    TextStyle(color: AppColors.white, fontSize: Sizes.dimen_16),
-              ),
-              vertical15,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SimpleDialogOption(
-                    onPressed: () {
-                      Navigator.pop(context, 0);
-                    },
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(color: AppColors.white),
-                    ),
-                  ),
-                  SimpleDialogOption(
-                    onPressed: () {
-                      Navigator.pop(context, 1);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(Sizes.dimen_8),
-                      ),
-                      padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
-                      child: const Text(
-                        'Yes',
-                        style: TextStyle(color: AppColors.spaceCadet),
-                      ),
-                    ),
-                  )
-                ],
-              )
-            ],
-          );
-        })) {
-      case 0:
-        break;
-      case 1:
-        exit(0);
-    }
+          ),
+        ) ??
+        false;
   }
 
   @override
@@ -162,7 +106,7 @@ class _HomePageState extends State<HomePage> {
           fixedColor: Theme.of(context).primaryColor,
         ),
         body: WillPopScope(
-          onWillPop: onBackPress,
+          onWillPop: initBackButton,
           child: PageView(
             controller: pageController,
             physics: const NeverScrollableScrollPhysics(),

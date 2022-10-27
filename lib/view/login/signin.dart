@@ -1,13 +1,15 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pro_course_app/Utils/util.dart';
+import 'package:pro_course_app/const/app_colors.dart';
 import 'package:pro_course_app/view/login/signup.dart';
 import 'package:provider/provider.dart';
+import '../../Utils/common_widget.dart';
 import '../../Utils/component.dart';
-import '../../course_list.dart';
 import '../../provider/auth_provider.dart';
 import '../home_page.dart';
 
@@ -20,7 +22,6 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _email = TextEditingController();
-
   final _password = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -66,7 +67,7 @@ class _SignInState extends State<SignIn> {
                   alignment: Alignment.center,
                   child: Text("Welcome back",
                       style: GoogleFonts.lobster(
-                          color: Colors.deepPurpleAccent,
+                          color: AppColors.indyBlue,
                           fontSize: 30,
                           fontWeight: FontWeight.bold)),
                 ),
@@ -86,21 +87,29 @@ class _SignInState extends State<SignIn> {
                 Center(
                     child: GestureDetector(
                   onTap: () async {
-                    try {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .signInWithEmailAndPassword(
-                              email: _email.text, password: _password.text);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const HomePage();
-                      }));
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        print('No user found for that email.');
-                      } else if (e.code == 'wrong-password') {
-                        print('Wrong password provided for that user.');
+                    if (_email.text.isNotEmpty || _password.text.isNotEmpty) {
+                      final bool isValid = EmailValidator.validate(_email.text);
+
+                      if (isValid) {
+                        bool isSuccess = await authProvider.handleSignInEmail(
+                            _email.text, _password.text);
+
+                        if (isSuccess) {
+                          // ignore: use_build_context_synchronously
+                          UtilFunctions.pushRemoveNavigation(
+                              context, const HomePage());
+                        } else {
+                          // ignore: use_build_context_synchronously
+                          alertDialog(context, "Invalid Crediantials",
+                              "Please Try Again");
+                        }
+                      } else {
+                        alertDialog(context, "Invalid Email",
+                            "Please Enter Valid Email");
                       }
+                    } else {
+                      alertDialog(
+                          context, "Empty Field", "Please Fill All The Fields");
                     }
                   },
                   child: Container(
@@ -126,10 +135,9 @@ class _SignInState extends State<SignIn> {
                     onTap: () async {
                       bool isSuccess = await authProvider.handleGoogleSignIn();
                       if (isSuccess) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const CourseList()));
+                        // ignore: use_build_context_synchronously
+                        UtilFunctions.pushRemoveNavigation(
+                            context, const HomePage());
                       }
                     },
                     child: Center(
@@ -151,17 +159,27 @@ class _SignInState extends State<SignIn> {
                   height: 50,
                 ),
                 Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      UtilFunctions.navigateTo(context, const SignUp());
-                    },
-                    child: Text("Dont Have account? Lets sign in",
-                        style: GoogleFonts.roboto(
-                            color: Colors.blue,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Dont Have account?",
+                          style: GoogleFonts.roboto(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold)),
+                      GestureDetector(
+                        onTap: () {
+                          UtilFunctions.navigateTo(context, const SignUp());
+                        },
+                        child: Text("Lets sign in",
+                            style: GoogleFonts.roboto(
+                                color: Colors.blue,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold)),
+                      )
+                    ],
                   ),
-                )
+                ),
               ],
             )
           ],

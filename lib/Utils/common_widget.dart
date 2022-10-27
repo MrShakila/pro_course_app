@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
 import 'package:flutter/material.dart';
 import 'package:pro_course_app/const/size.dart';
@@ -83,5 +84,26 @@ Widget messageBubble(
     tail: false,
     isSender: isSender,
     textStyle: const TextStyle(color: Colors.white, fontSize: 16),
+  );
+}
+
+alertDialog(BuildContext context, String title, String desc) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => ElasticIn(
+      child: AlertDialog(
+        title: Text(title),
+        content: Text(desc),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              //call theapi
+              Navigator.of(context).pop();
+            },
+            child: const Text('Ok'),
+          )
+        ],
+      ),
+    ),
   );
 }

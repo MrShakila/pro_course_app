@@ -85,6 +85,8 @@ class AuthProvider extends ChangeNotifier {
           await prefs.setString(
               FirestoreConstants.photoUrl, currentUser.photoURL ?? "");
           await prefs.setString(
+              FirestoreConstants.email, currentUser.email ?? "");
+          await prefs.setString(
               FirestoreConstants.phoneNumber, currentUser.phoneNumber ?? "");
         } else {
           DocumentSnapshot documentSnapshot = document[0];
@@ -114,61 +116,129 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> handleSignInEmail(String email, String password) async {
     _status = Status.authenticating;
     notifyListeners();
-    UserCredential result = await firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
-    final User user = result.user!;
-    if (user != null) {
-      final QuerySnapshot result = await firebaseFirestore
-          .collection(FirestoreConstants.pathUserCollection)
-          .where(FirestoreConstants.id, isEqualTo: user.uid)
-          .get();
-      final List<DocumentSnapshot> document = result.docs;
-      if (document.isEmpty) {
-        firebaseFirestore
+    try {
+      UserCredential result = await firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      final User user = result.user!;
+      if (user != null) {
+        final QuerySnapshot result = await firebaseFirestore
             .collection(FirestoreConstants.pathUserCollection)
-            .doc(user.uid)
-            .set({
-          FirestoreConstants.displayName: user.displayName,
-          FirestoreConstants.photoUrl: user.photoURL,
-          FirestoreConstants.id: user.uid,
-          "createdAt: ": DateTime.now().millisecondsSinceEpoch.toString(),
-          FirestoreConstants.chattingWith: null
-        });
+            .where(FirestoreConstants.id, isEqualTo: user.uid)
+            .get();
+        final List<DocumentSnapshot> document = result.docs;
+        if (document.isEmpty) {
+          firebaseFirestore
+              .collection(FirestoreConstants.pathUserCollection)
+              .doc(user.uid)
+              .set({
+            FirestoreConstants.displayName: user.displayName,
+            FirestoreConstants.photoUrl: user.photoURL,
+            FirestoreConstants.id: user.uid,
+            "createdAt: ": DateTime.now().millisecondsSinceEpoch.toString(),
+            FirestoreConstants.chattingWith: null
+          });
 
-        User? currentUser = user;
-        await prefs.setString(FirestoreConstants.id, currentUser.uid);
-        await prefs.setString(
-            FirestoreConstants.displayName, currentUser.displayName ?? "");
-        await prefs.setString(
-            FirestoreConstants.photoUrl, currentUser.photoURL ?? "");
-        await prefs.setString(
-            FirestoreConstants.phoneNumber, currentUser.phoneNumber ?? "");
+          User? currentUser = user;
+          await prefs.setString(FirestoreConstants.id, currentUser.uid);
+          await prefs.setString(
+              FirestoreConstants.displayName, currentUser.displayName ?? "");
+          await prefs.setString(
+              FirestoreConstants.photoUrl, currentUser.photoURL ?? "");
+          await prefs.setString(
+              FirestoreConstants.phoneNumber, currentUser.phoneNumber ?? "");
+        } else {
+          DocumentSnapshot documentSnapshot = document[0];
+          ChatUser userChat = ChatUser.fromDocument(documentSnapshot);
+          await prefs.setString(FirestoreConstants.id, userChat.id);
+          await prefs.setString(
+              FirestoreConstants.displayName, userChat.displayName);
+          await prefs.setString(FirestoreConstants.aboutMe, userChat.aboutMe);
+          await prefs.setString(
+              FirestoreConstants.phoneNumber, userChat.phoneNumber);
+        }
+        _status = Status.authenticated;
+        notifyListeners();
+        return true;
       } else {
-        DocumentSnapshot documentSnapshot = document[0];
-        ChatUser userChat = ChatUser.fromDocument(documentSnapshot);
-        await prefs.setString(FirestoreConstants.id, userChat.id);
-        await prefs.setString(
-            FirestoreConstants.displayName, userChat.displayName);
-        await prefs.setString(FirestoreConstants.aboutMe, userChat.aboutMe);
-        await prefs.setString(
-            FirestoreConstants.phoneNumber, userChat.phoneNumber);
+        _status = Status.authenticateError;
+        notifyListeners();
+        return false;
       }
-      _status = Status.authenticated;
-      notifyListeners();
-      return true;
-    } else {
-      _status = Status.authenticateError;
-      notifyListeners();
+    } on Exception {
       return false;
     }
   }
 
-  Future<User> handleSignUp(email, password) async {
-    UserCredential result = await firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    final User user = result.user!;
+  Future<bool> handleSignUp(
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+    String mobileNumber,
+    String school,
+    String birthday,
+    String age,
+    String logitude,
+    String latitude,
+  ) async {
+    _status = Status.authenticating;
+    notifyListeners();
+    try {
+      UserCredential result = await firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      final User user = result.user!;
+      if (user != null) {
+        final QuerySnapshot result = await firebaseFirestore
+            .collection(FirestoreConstants.pathUserCollection)
+            .where(FirestoreConstants.id, isEqualTo: user.uid)
+            .get();
+        final List<DocumentSnapshot> document = result.docs;
+        if (document.isEmpty) {
+          firebaseFirestore
+              .collection(FirestoreConstants.pathUserCollection)
+              .doc(user.uid)
+              .set({
+            FirestoreConstants.displayName: "$firstName $lastName",
+            FirestoreConstants.photoUrl: user.photoURL,
+            FirestoreConstants.id: user.uid,
+            FirestoreConstants.address: "$latitude $logitude",
+            FirestoreConstants.birthDay: birthday,
+            FirestoreConstants.age: age,
+            FirestoreConstants.school: school,
+            FirestoreConstants.createdAt:
+                DateTime.now().millisecondsSinceEpoch.toString(),
+            FirestoreConstants.chattingWith: null
+          });
 
-    return user;
+          User? currentUser = user;
+          await prefs.setString(FirestoreConstants.id, currentUser.uid);
+          await prefs.setString(
+              FirestoreConstants.displayName, currentUser.displayName ?? "");
+          await prefs.setString(
+              FirestoreConstants.photoUrl, currentUser.photoURL ?? "");
+          await prefs.setString(
+              FirestoreConstants.phoneNumber, currentUser.phoneNumber ?? "");
+        } else {
+          DocumentSnapshot documentSnapshot = document[0];
+          ChatUser userChat = ChatUser.fromDocument(documentSnapshot);
+          await prefs.setString(FirestoreConstants.id, userChat.id);
+          await prefs.setString(
+              FirestoreConstants.displayName, userChat.displayName);
+          await prefs.setString(FirestoreConstants.aboutMe, userChat.aboutMe);
+          await prefs.setString(
+              FirestoreConstants.phoneNumber, userChat.phoneNumber);
+        }
+        _status = Status.authenticated;
+        notifyListeners();
+        return true;
+      } else {
+        _status = Status.authenticateError;
+        notifyListeners();
+        return false;
+      }
+    } on Exception {
+      return false;
+    }
   }
 
   Future<void> googleSignOut() async {
