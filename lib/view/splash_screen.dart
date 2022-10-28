@@ -4,6 +4,7 @@ import 'package:pro_course_app/view/login/signin.dart';
 import 'package:pro_course_app/view/home_page.dart';
 import 'package:provider/provider.dart';
 
+import '../Utils/util.dart';
 import '../const/app_colors.dart';
 import '../provider/auth_provider.dart';
 
@@ -28,12 +29,10 @@ class _SplashPageState extends State<SplashPage> {
     AuthProvider authProvider = context.read<AuthProvider>();
     bool isLoggedIn = await authProvider.isLoggedIn();
     if (isLoggedIn) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      UtilFunctions.pushRemoveNavigation(context, const HomePage());
       return;
     }
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const SignIn()));
+    UtilFunctions.pushRemoveNavigation(context, const SignIn());
   }
 
   @override

@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logger/logger.dart';
 import 'package:pro_course_app/Utils/util.dart';
 import 'package:pro_course_app/const/app_colors.dart';
 import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/view/home_page.dart';
+import 'package:pro_course_app/view/login/signin.dart';
 import 'package:pro_course_app/view/profile._page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,11 +48,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   late AuthProvider authProvider;
 
-  Future<void> googleSignOut() async {
-    await authProvider.googleSignOut();
-    await authProvider.firebaseAuth.signOut();
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginPage()));
+  Future<void> signout() async {
+    try {
+      await authProvider.firebaseAuth.signOut();
+      await authProvider.googleSignOut();
+    } catch (e) {
+      Logger().e(e);
+    }
+
+    UtilFunctions.pushRemoveNavigation(context, const SignIn());
   }
 
   @override
@@ -115,7 +121,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             text: "LogOut",
           ),
           onTap: () async {
-            googleSignOut();
+            signout();
             Navigator.pop(context);
           },
         )

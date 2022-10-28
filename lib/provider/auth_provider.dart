@@ -50,7 +50,14 @@ class AuthProvider extends ChangeNotifier {
         prefs.getString(FirestoreConstants.id)?.isNotEmpty == true) {
       return true;
     } else {
-      return false;
+      var user = firebaseAuth.currentUser;
+      if (user != null) {
+        // User is signed in.
+        return true;
+      } else {
+        return false;
+        // No user is signed in.
+      }
     }
   }
 

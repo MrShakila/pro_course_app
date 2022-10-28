@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pro_course_app/Utils/custo_drawer.dart';
+import 'package:pro_course_app/Utils/loading_indicator.dart';
 import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/model/chat_messege_model.dart';
 import 'package:pro_course_app/provider/chat_provider.dart';
@@ -15,10 +16,11 @@ import 'package:provider/provider.dart';
 
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../Utils/util.dart';
 import '../../const/app_colors.dart';
 import '../../Utils/common_widget.dart';
 import '../../const/fire_base_const.dart';
-import '../login/login_page.dart';
+import '../login/signin.dart';
 
 class ChatPage extends StatefulWidget {
   final String peerId;
@@ -91,9 +93,7 @@ class _ChatPageState extends State<ChatPage> {
     if (authProvider.getFirebaseUserId()?.isNotEmpty == true) {
       currentUserId = authProvider.getFirebaseUserId()!;
     } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-          (Route<dynamic> route) => false);
+      UtilFunctions.pushRemoveNavigation(context, const SignIn());
     }
     if (currentUserId.compareTo(widget.peerId) > 0) {
       groupChatId = '$currentUserId - ${widget.peerId}';
@@ -533,8 +533,8 @@ class _ChatPageState extends State<ChatPage> {
                   }
                 } else {
                   return const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.burgundy,
+                    child: Center(
+                      child: CustomLoading(),
                     ),
                   );
                 }

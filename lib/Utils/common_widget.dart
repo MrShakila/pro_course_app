@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
 import 'package:flutter/material.dart';
+import 'package:pro_course_app/Utils/util.dart';
 import 'package:pro_course_app/const/size.dart';
 
 import '../const/app_colors.dart';
@@ -97,7 +98,7 @@ alertDialog(BuildContext context, String title, String desc) async {
         actions: [
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              UtilFunctions.goBack(context);
             },
             child: const Text('Ok'),
           )

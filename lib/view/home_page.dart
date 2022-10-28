@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:pro_course_app/Utils/custo_drawer.dart';
 import 'package:pro_course_app/const/app_colors.dart';
+import 'package:pro_course_app/mycourse_list.dart';
 import 'package:pro_course_app/view/chat/chat_list.dart';
+import 'package:pro_course_app/view/login/signin.dart';
 import 'package:provider/provider.dart';
 
 import '../Utils/util.dart';
@@ -29,8 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> googleSignOut() async {
     authProvider.googleSignOut();
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginPage()));
+    UtilFunctions.pushRemoveNavigation(context, const SignIn());
   }
 
   Future<bool> initBackButton() async {
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
               content: const Text('Do you really want to exit ?'),
               actions: [
                 ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => UtilFunctions.goBack(context),
                   child: const Text('No'),
                 ),
                 ElevatedButton(
@@ -64,9 +65,7 @@ class _HomePageState extends State<HomePage> {
     if (authProvider.getFirebaseUserId()?.isNotEmpty == true) {
       currentUserId = authProvider.getFirebaseUserId()!;
     } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-          (Route<dynamic> route) => false);
+      UtilFunctions.pushRemoveNavigation(context, const SignIn());
     }
     // TODO: implement initState
     super.initState();
@@ -112,15 +111,17 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: _buildThreeItems(),
+          selectedItemColor: Colors.black38,
           onTap: (int index) {
-            pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-            );
+            setState(() {
+              pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+              );
+            });
           },
           currentIndex: pageIndex,
-          fixedColor: Theme.of(context).primaryColor,
         ),
         body: WillPopScope(
             onWillPop: initBackButton,
@@ -139,7 +140,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> _buildThreePageViewChildren() {
-    return <Widget>[const CourseList(), const ChatList()];
+    return <Widget>[
+      const CourseList(),
+      MyCourseList(userid: currentUserId),
+      const ChatList()
+    ];
   }
 
   List<BottomNavigationBarItem> _buildThreeItems() {
@@ -147,6 +152,10 @@ class _HomePageState extends State<HomePage> {
       BottomNavigationBarItem(
         icon: Icon(Icons.home),
         label: 'Home Page',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.laptop),
+        label: 'My Courses',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.chat),

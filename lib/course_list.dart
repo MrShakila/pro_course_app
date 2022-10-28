@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pro_course_app/Utils/loading_indicator.dart';
 import 'package:pro_course_app/Utils/util.dart';
-import 'package:pro_course_app/view/course/course_detail.dart';
+import 'package:pro_course_app/view/course/coursemain.dart';
 
 class CourseList extends StatefulWidget {
   const CourseList({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class _CourseListState extends State<CourseList> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CustomLoading();
+          return const Center(child: CustomLoading());
         }
 
         return ListView(
@@ -54,7 +54,8 @@ class CustomListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        UtilFunctions.navigateTo(context, CourseDetail(courseid: data["id"]));
+        UtilFunctions.navigateTo(
+            context, CourseDetailMain(courseid: data["id"]));
       },
       child: SizedBox(
         height: 100,

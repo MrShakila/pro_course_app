@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _phoneController = TextEditingController();
 
   late String currentUserId;
-  String dialCodeDigits = '+00';
+  String dialCodeDigits = '+94';
   String id = '';
   String displayName = '';
   String photoUrl = '';

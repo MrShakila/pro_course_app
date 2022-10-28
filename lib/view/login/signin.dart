@@ -90,52 +90,40 @@ class _SignInState extends State<SignIn> {
                           ),
                           const HeightSizedBox(),
                           Center(
-                              child: GestureDetector(
-                            onTap: () async {
-                              if (_email.text.isNotEmpty ||
-                                  _password.text.isNotEmpty) {
-                                final bool isValid =
-                                    EmailValidator.validate(_email.text);
+                            child: ElevatedButton(
+                                onPressed: () async {
+                                  if (_email.text.isNotEmpty ||
+                                      _password.text.isNotEmpty) {
+                                    final bool isValid =
+                                        EmailValidator.validate(_email.text);
 
-                                if (isValid) {
-                                  bool isSuccess =
-                                      await authProvider.handleSignInEmail(
-                                          _email.text, _password.text);
+                                    if (isValid) {
+                                      bool isSuccess =
+                                          await authProvider.handleSignInEmail(
+                                              _email.text, _password.text);
 
-                                  if (isSuccess) {
-                                    // ignore: use_build_context_synchronously
-                                    UtilFunctions.pushRemoveNavigation(
-                                        context, const HomePage());
+                                      if (isSuccess) {
+                                        // ignore: use_build_context_synchronously
+                                        UtilFunctions.pushRemoveNavigation(
+                                            context, const HomePage());
+                                      } else {
+                                        // ignore: use_build_context_synchronously
+                                        alertDialog(
+                                            context,
+                                            "Invalid Crediantials",
+                                            "Please Try Again");
+                                      }
+                                    } else {
+                                      alertDialog(context, "Invalid Email",
+                                          "Please Enter Valid Email");
+                                    }
                                   } else {
-                                    // ignore: use_build_context_synchronously
-                                    alertDialog(context, "Invalid Crediantials",
-                                        "Please Try Again");
+                                    alertDialog(context, "Empty Field",
+                                        "Please Fill All The Fields");
                                   }
-                                } else {
-                                  alertDialog(context, "Invalid Email",
-                                      "Please Enter Valid Email");
-                                }
-                              } else {
-                                alertDialog(context, "Empty Field",
-                                    "Please Fill All The Fields");
-                              }
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.lightBlue,
-                                  borderRadius: BorderRadius.circular(25)),
-                              width: 100,
-                              height: 40,
-                              child: Center(
-                                  child: Text(
-                                "Sign In",
-                                style: GoogleFonts.roboto(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                            ),
-                          )),
+                                },
+                                child: const Text("Sign Up")),
+                          ),
                           const SizedBox(
                             height: 20,
                           ),

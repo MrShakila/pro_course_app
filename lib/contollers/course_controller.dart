@@ -39,6 +39,7 @@ class CourseController {
               .doc(courseid)
               .collection("students")
               .add({"user": user!.uid});
+          updateusercourselist(courseid, context);
           AwesomeDialog(
             context: context,
             dialogType: DialogType.success,
@@ -57,28 +58,33 @@ class CourseController {
     //hold
   }
 
-  // Future<bool> checkuserenroled(String courseid) async {
-  //   try {
-  //     await FirebaseFirestore.instance
-  //         .collection('course')
-  //         .doc(courseid)
-  //         .collection("students")
-  //         .where('user', isEqualTo: user!.uid)
-  //         .get()
-  //         .then((value) {
-  //       print(value.docs);
-  //       if (value.docs.isNotEmpty) {
-  //         return true;
-  //       } else {
-  //         return false;
-  //       }
-  //     });
-  //   } on Exception catch (e) {
-  //     Logger().e(e);
-  //   }
+  Future<void> updateusercourselist(
+      String courseid, BuildContext context) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection("course")
+        .where('id', isEqualTo: courseid)
+        .get()
+        .then((value) {
+      print(value.docs);
+      if (value.docs.isNotEmpty) {
+      } else {
+        try {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(user!.uid)
+              .collection("course")
+              .add({"id": courseid});
+        } on Exception catch (e) {
+          Logger().e(e);
+          // TODO
+        }
+      }
+    });
 
-  //   //hold
-  // }
+    //hold
+  }
 
   //upload picked iamge file to firebase storage
   UploadTask? uploadFile(File img) {

@@ -50,7 +50,7 @@ class SaveCourseInfo extends StatelessWidget {
             TextFieldLog(
                 title: "Title",
                 icon: const Icon(
-                  Icons.book,
+                  Icons.bookmark,
                   color: Colors.black,
                 ),
                 controller: title,
@@ -66,7 +66,7 @@ class SaveCourseInfo extends StatelessWidget {
             TextFieldLog(
                 title: "PdfUrl",
                 icon: const Icon(
-                  Icons.upload_rounded,
+                  Icons.picture_as_pdf,
                   color: Colors.black,
                 ),
                 controller: pdfurl,
@@ -120,28 +120,30 @@ class SaveCourseInfo extends StatelessWidget {
                       if (value.getImage.path == '') {
                         AwesomeDialog(
                           context: context,
-                          dialogType: DialogType.ERROR,
+                          dialogType: DialogType.error,
                           animType: AnimType.BOTTOMSLIDE,
                           title: 'Error',
-                          desc: 'Please picked the image',
+                          desc: 'Please pick a image',
                           btnOkOnPress: () {},
                         ).show();
                       } else {
                         if (title.text.isNotEmpty &&
                             description.text.isNotEmpty &&
+                            pdfurl.text.isNotEmpty &&
                             star.text.isNotEmpty) {
                           value.startSavecourseInfo(
                             context,
                             title.text.trim(),
                             description.text.trim(),
                             4,
-                            pdfurl.text,
+                            pdfurl.text.trim(),
                           );
                           title.clear();
                           description.clear();
                           star.clear();
+                          pdfurl.clear();
 
-                          imageCache.clear();
+                          imageCache.clearLiveImages();
                         } else {
                           AwesomeDialog(
                             context: context,

@@ -11,12 +11,13 @@ import 'package:pro_course_app/provider/home_provider.dart';
 import 'package:pro_course_app/const/size.dart';
 import 'package:provider/provider.dart';
 
+import '../../Utils/util.dart';
+import '../login/signin.dart';
 import 'chat_page.dart';
 import '../../const/fire_base_const.dart';
 import '../../const/keyboardutils.dart';
 
 import '../../Utils/loading_indicator.dart';
-import '../login/login_page.dart';
 
 class ChatList extends StatefulWidget {
   const ChatList({Key? key}) : super(key: key);
@@ -65,9 +66,7 @@ class _ChatListState extends State<ChatList> {
     if (authProvider.getFirebaseUserId()?.isNotEmpty == true) {
       currentUserId = authProvider.getFirebaseUserId()!;
     } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-          (Route<dynamic> route) => false);
+      UtilFunctions.pushRemoveNavigation(context, const SignIn());
     }
 
     scrollController.addListener(scrollListener);
@@ -103,7 +102,7 @@ class _ChatListState extends State<ChatList> {
                     }
                   } else {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: Center(child: CircularProgressIndicator()),
                     );
                   }
                 },
@@ -130,15 +129,14 @@ class _ChatListState extends State<ChatList> {
             if (KeyboardUtils.isKeyboardShowing()) {
               KeyboardUtils.closeKeyboard(context);
             }
-            Navigator.push(
+            UtilFunctions.navigateTo(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => ChatPage(
-                          peerId: userChat.id,
-                          peerAvatar: userChat.photoUrl,
-                          peerNickname: userChat.displayName,
-                          // userAvatar: firebaseAuth.currentUser!.photoURL,
-                        )));
+                ChatPage(
+                  peerId: userChat.id,
+                  peerAvatar: userChat.photoUrl,
+                  peerNickname: userChat.displayName,
+                  // userAvatar: firebaseAuth.currentUser!.photoURL,
+                ));
           },
           child: ListTile(
             leading: userChat.photoUrl.isNotEmpty
