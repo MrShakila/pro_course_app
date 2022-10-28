@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 
@@ -12,53 +14,71 @@ class CourseController {
   CollectionReference course = FirebaseFirestore.instance.collection('course');
   User? user = FirebaseAuth.instance.currentUser;
 
-  Future<void> adduserstocourse(
-    String courseid,
-  ) async {
-    //uploading the image
-    //get an online doc id
-
-    //saving course details to cloud store
-    try {
-      await FirebaseFirestore.instance
-          .collection('course')
-          .doc(courseid)
-          .collection("students")
-          .add({"user": user!.uid});
-    } on Exception catch (e) {
-      Logger().e(e);
-      // TODO
-    }
-
-    //hold
-  }
-
-  Future<bool> checkuserenroled(String courseid) async {
-    //uploading the image
-    //get an online doc id
-
-    //saving course details to cloud store
-    try {
-      await FirebaseFirestore.instance
-          .collection('course')
-          .doc(courseid)
-          .collection("students")
-          .where('user', isEqualTo: user!.uid)
-          .get()
-          .then((value) {
-        print(value);
-        if (value.docs.isNotEmpty) {
-          return true;
-        } else {
-          return false;
+  Future<void> adduserstocourse(String courseid, BuildContext context) async {
+    await FirebaseFirestore.instance
+        .collection('course')
+        .doc(courseid)
+        .collection("students")
+        .where('user', isEqualTo: user!.uid)
+        .get()
+        .then((value) {
+      print(value.docs);
+      if (value.docs.isNotEmpty) {
+        AwesomeDialog(
+          context: context,
+          dialogType: DialogType.error,
+          animType: AnimType.bottomSlide,
+          title: 'Error',
+          desc: 'User Alreday In this Course',
+          btnOkOnPress: () {},
+        ).show();
+      } else {
+        try {
+          FirebaseFirestore.instance
+              .collection('course')
+              .doc(courseid)
+              .collection("students")
+              .add({"user": user!.uid});
+          AwesomeDialog(
+            context: context,
+            dialogType: DialogType.success,
+            animType: AnimType.bottomSlide,
+            title: 'Success',
+            desc: 'Student Added Successfully',
+            btnOkOnPress: () {},
+          ).show();
+        } on Exception catch (e) {
+          Logger().e(e);
+          // TODO
         }
-      });
-    } on Exception catch (e) {
-      Logger().e(e);
-    }
-    return true;
+      }
+    });
+
     //hold
   }
+
+  // Future<bool> checkuserenroled(String courseid) async {
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection('course')
+  //         .doc(courseid)
+  //         .collection("students")
+  //         .where('user', isEqualTo: user!.uid)
+  //         .get()
+  //         .then((value) {
+  //       print(value.docs);
+  //       if (value.docs.isNotEmpty) {
+  //         return true;
+  //       } else {
+  //         return false;
+  //       }
+  //     });
+  //   } on Exception catch (e) {
+  //     Logger().e(e);
+  //   }
+
+  //   //hold
+  // }
 
   //upload picked iamge file to firebase storage
   UploadTask? uploadFile(File img) {

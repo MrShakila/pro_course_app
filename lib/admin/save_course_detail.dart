@@ -65,35 +65,9 @@ class Course with ChangeNotifier {
   Future<void> addNewStudentToCourse(
       BuildContext context, String courseid) async {
     setIsLOading(true);
-    bool isEnrolled = await _courseController.checkuserenroled(
-      courseid,
-    );
-    if (isEnrolled) {
-      await _courseController.adduserstocourse(
-        courseid,
-      );
-      setIsLOading(false);
-    } else {
-      setIsLOading(false);
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.error,
-        animType: AnimType.bottomSlide,
-        title: 'Error',
-        desc: 'You Already Enrolled This Course',
-        btnOkOnPress: () {},
-      ).show();
-    }
 
-    AwesomeDialog(
-      context: context,
-      dialogType: DialogType.success,
-      animType: AnimType.bottomSlide,
-      title: 'Sucess',
-      desc: 'Student Added Successfully',
-      btnOkOnPress: () {},
-    ).show();
-    Logger().i("Student Added");
+    await _courseController.adduserstocourse(courseid, context);
+    setIsLOading(false);
   }
 
   Future<void> getAllcourses(

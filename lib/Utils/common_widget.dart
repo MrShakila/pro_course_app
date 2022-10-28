@@ -97,7 +97,6 @@ alertDialog(BuildContext context, String title, String desc) async {
         actions: [
           ElevatedButton(
             onPressed: () {
-              //call theapi
               Navigator.of(context).pop();
             },
             child: const Text('Ok'),

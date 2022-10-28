@@ -25,6 +25,15 @@ class AuthProvider extends ChangeNotifier {
 
   Status get status => _status;
 
+  bool _isLoading = false;
+
+  void setIsLOading(bool val) {
+    _isLoading = val;
+    notifyListeners();
+  }
+
+  bool get isLoading => _isLoading;
+
   AuthProvider(
       {required this.googleSignIn,
       required this.firebaseAuth,
@@ -53,6 +62,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<bool> handleGoogleSignIn() async {
+    setIsLOading(true);
     _status = Status.authenticating;
     notifyListeners();
 
@@ -107,15 +117,18 @@ class AuthProvider extends ChangeNotifier {
         }
         _status = Status.authenticated;
         notifyListeners();
+        setIsLOading(false);
         return true;
       } else {
         _status = Status.authenticateError;
         notifyListeners();
+        setIsLOading(false);
         return false;
       }
     } else {
       _status = Status.authenticateCanceled;
       notifyListeners();
+      setIsLOading(false);
       return false;
     }
   }
@@ -123,6 +136,7 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> handleSignInEmail(String email, String password) async {
     _status = Status.authenticating;
     notifyListeners();
+    setIsLOading(true);
     try {
       UserCredential result = await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -165,13 +179,16 @@ class AuthProvider extends ChangeNotifier {
         }
         _status = Status.authenticated;
         notifyListeners();
+        setIsLOading(false);
         return true;
       } else {
         _status = Status.authenticateError;
         notifyListeners();
+        setIsLOading(false);
         return false;
       }
     } on Exception {
+      setIsLOading(false);
       return false;
     }
   }
@@ -189,6 +206,7 @@ class AuthProvider extends ChangeNotifier {
     String latitude,
   ) async {
     _status = Status.authenticating;
+    setIsLOading(true);
     notifyListeners();
     try {
       UserCredential result = await firebaseAuth.createUserWithEmailAndPassword(
@@ -210,7 +228,7 @@ class AuthProvider extends ChangeNotifier {
             FirestoreConstants.id: user.uid,
             FirestoreConstants.address: "$latitude $logitude",
             FirestoreConstants.birthDay: birthday,
-            FirestoreConstants.age: age,
+            FirestoreConstants.age: agecalculate(age),
             FirestoreConstants.school: school,
             FirestoreConstants.createdAt:
                 DateTime.now().millisecondsSinceEpoch.toString(),
@@ -237,30 +255,38 @@ class AuthProvider extends ChangeNotifier {
         }
         _status = Status.authenticated;
         notifyListeners();
+        setIsLOading(false);
         return true;
       } else {
         _status = Status.authenticateError;
         notifyListeners();
+        setIsLOading(false);
         return false;
       }
     } on Exception {
+      setIsLOading(false);
       return false;
     }
   }
 
   Future<bool> sendresetemail(String email) async {
     var result = firebaseAuth.sendPasswordResetEmail(email: email);
+    setIsLOading(true);
     if (result != null) {
+      setIsLOading(false);
       return true;
     } else {
+      setIsLOading(false);
       return false;
     }
   }
 
   Future<void> googleSignOut() async {
+    setIsLOading(true);
     _status = Status.uninitialized;
     await firebaseAuth.signOut();
     await googleSignIn.disconnect();
     await googleSignIn.signOut();
+    setIsLOading(false);
   }
 }
