@@ -8,16 +8,40 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../../Utils/common_widget.dart';
 import '../../Utils/component.dart';
-import '../../Utils/util.dart';
+import '../../Utils/navigation.dart';
 import '../../const/app_colors.dart';
 import '../../provider/auth_provider.dart';
-import '../home_page.dart';
+import '../home/home_page.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
 
   @override
   State<SignUp> createState() => _SignUpState();
+}
+
+agecalculate(String birthay) {
+  int patientage = int.parse(
+    birthay.substring(0, 3),
+  );
+
+  int today = int.parse(DateTime.now().year.toString());
+  int hisage = today - patientage;
+  return hisage;
+}
+
+bool isagevalid(String birthay) {
+  int userage = int.parse(
+    birthay.substring(0, 3),
+  );
+
+  int today = int.parse(DateTime.now().year.toString());
+  int hisage = today - userage;
+  if (hisage < 35 && hisage > 18) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 class _SignUpState extends State<SignUp> {
@@ -42,6 +66,9 @@ class _SignUpState extends State<SignUp> {
     } else if (_phonenumber.text.length != 10) {
       alertDialog(
           context, "Invalid mobile Number", "Please enter Valid mobile Number");
+      return false;
+    } else if (isagevalid(age)) {
+      alertDialog(context, "No Access", "Please enter Birthday between 18-35");
       return false;
     } else if (_password.text.length <= 10) {
       alertDialog(context, "Password isnt secured",
@@ -202,7 +229,7 @@ class _SignUpState extends State<SignUp> {
                           _phonenumber.text,
                           _school.text,
                           birthday,
-                          age,
+                          agecalculate(birthday),
                           latitude,
                           longitude);
 

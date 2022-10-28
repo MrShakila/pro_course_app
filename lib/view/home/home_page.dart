@@ -4,18 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:pro_course_app/Utils/custo_drawer.dart';
 import 'package:pro_course_app/const/app_colors.dart';
-import 'package:pro_course_app/mycourse_list.dart';
+import 'package:pro_course_app/view/course/mycourse_list.dart';
 import 'package:pro_course_app/view/chat/chat_list.dart';
 import 'package:pro_course_app/view/login/signin.dart';
 import 'package:provider/provider.dart';
 
-import '../Utils/util.dart';
-import '../admin/save_course_detail.dart';
-import '../course_list.dart';
-import '../provider/auth_provider.dart';
-import '../provider/home_provider.dart';
-import 'course/add_new_course.dart';
-import 'login/login_page.dart';
+import '../../Utils/navigation.dart';
+import '../../admin/save_course_detail.dart';
+import '../course/course_list.dart';
+import '../../provider/auth_provider.dart';
+import '../../provider/home_provider.dart';
+import '../course/add_new_course.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

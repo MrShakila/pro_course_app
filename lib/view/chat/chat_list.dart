@@ -1,22 +1,15 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:pro_course_app/model/chat_user.dart';
 import 'package:pro_course_app/const/debouncer.dart';
-
 import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/provider/home_provider.dart';
-import 'package:pro_course_app/const/size.dart';
 import 'package:provider/provider.dart';
-
-import '../../Utils/util.dart';
+import '../../Utils/Widget/userlist.dart';
+import '../../Utils/navigation.dart';
 import '../login/signin.dart';
-import 'chat_page.dart';
 import '../../const/fire_base_const.dart';
-import '../../const/keyboardutils.dart';
-
 import '../../Utils/loading_indicator.dart';
 
 class ChatList extends StatefulWidget {
@@ -89,8 +82,8 @@ class _ChatListState extends State<ChatList> {
                       return ListView.separated(
                         shrinkWrap: true,
                         itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) =>
-                            buildItem(context, snapshot.data?.docs[index]),
+                        itemBuilder: (context, index) => buildUserLIst(
+                            context, snapshot.data?.docs[index], currentUserId),
                         controller: scrollController,
                         separatorBuilder: (BuildContext context, int index) =>
                             const Divider(),
@@ -115,74 +108,5 @@ class _ChatListState extends State<ChatList> {
         ),
       ],
     );
-  }
-
-  Widget buildItem(BuildContext context, DocumentSnapshot? documentSnapshot) {
-    final firebaseAuth = FirebaseAuth.instance;
-    if (documentSnapshot != null) {
-      ChatUser userChat = ChatUser.fromDocument(documentSnapshot);
-      if (userChat.id == currentUserId) {
-        return const SizedBox.shrink();
-      } else {
-        return TextButton(
-          onPressed: () {
-            if (KeyboardUtils.isKeyboardShowing()) {
-              KeyboardUtils.closeKeyboard(context);
-            }
-            UtilFunctions.navigateTo(
-                context,
-                ChatPage(
-                  peerId: userChat.id,
-                  peerAvatar: userChat.photoUrl,
-                  peerNickname: userChat.displayName,
-                  // userAvatar: firebaseAuth.currentUser!.photoURL,
-                ));
-          },
-          child: ListTile(
-            leading: userChat.photoUrl.isNotEmpty
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(Sizes.dimen_30),
-                    child: Image.network(
-                      userChat.photoUrl,
-                      fit: BoxFit.cover,
-                      width: 50,
-                      height: 50,
-                      loadingBuilder: (BuildContext ctx, Widget child,
-                          ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child;
-                        } else {
-                          return SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                                color: Colors.grey,
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null),
-                          );
-                        }
-                      },
-                      errorBuilder: (context, object, stackTrace) {
-                        return const Icon(Icons.account_circle, size: 50);
-                      },
-                    ),
-                  )
-                : const Icon(
-                    Icons.account_circle,
-                    size: 50,
-                  ),
-            title: Text(
-              userChat.displayName,
-              style: const TextStyle(color: Colors.black),
-            ),
-          ),
-        );
-      }
-    } else {
-      return const SizedBox.shrink();
-    }
   }
 }

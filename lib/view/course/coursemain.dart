@@ -3,7 +3,7 @@ import 'package:pro_course_app/Utils/custo_drawer.dart';
 import 'package:pro_course_app/view/course/course_detail.dart';
 
 import '../../const/app_colors.dart';
-import '../../studentlist.dart';
+import 'studentlist.dart';
 
 class CourseDetailMain extends StatefulWidget {
   final String courseid;

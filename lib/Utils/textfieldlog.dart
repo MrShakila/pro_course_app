@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class TextFieldLog extends StatelessWidget {
+class CustomTextField extends StatelessWidget {
   final String title;
   final Icon icon;
   final TextEditingController controller;
   final TextInputType textInputType;
   bool isObscure;
-  TextFieldLog(
+  CustomTextField(
       {Key? key,
       required this.title,
       required this.icon,

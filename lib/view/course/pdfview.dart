@@ -3,6 +3,7 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:pro_course_app/Utils/loading_indicator.dart';
 
 class PdfViewScreen extends StatefulWidget {
   final String url;
@@ -49,7 +50,7 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
               enableSwipe: true,
               filePath: localPath,
             )
-          : const Center(child: CircularProgressIndicator()),
+          : const Center(child: CustomLoading()),
     );
   }
 }

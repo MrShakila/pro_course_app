@@ -11,8 +11,8 @@ import 'package:pro_course_app/provider/profile_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import '../const/fire_base_const.dart';
-import '../const/text_field_constant.dart';
+import '../../const/fire_base_const.dart';
+import '../../const/text_field_constant.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);

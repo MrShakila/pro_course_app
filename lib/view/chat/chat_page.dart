@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../Utils/util.dart';
+import '../../Utils/navigation.dart';
 import '../../const/app_colors.dart';
 import '../../Utils/common_widget.dart';
 import '../../const/fire_base_const.dart';
@@ -360,7 +360,7 @@ class _ChatPageState extends State<ChatPage> {
                             borderRadius: BorderRadius.circular(Sizes.dimen_20),
                           ),
                           child: Image.network(
-                            "https://thispersondoesnotexist.com/image",
+                            "https://www.transparentpng.com/thumb/user/blue-male-user-profile-transparent-png-2lbgMx.png",
                             // widget.userAvatar,
                             width: Sizes.dimen_40,
                             height: Sizes.dimen_40,

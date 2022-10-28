@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pro_course_app/const/size.dart';
 import 'package:pro_course_app/view/login/signin.dart';
-import 'package:pro_course_app/view/home_page.dart';
+import 'package:pro_course_app/view/home/home_page.dart';
 import 'package:provider/provider.dart';
 
-import '../Utils/util.dart';
-import '../const/app_colors.dart';
-import '../provider/auth_provider.dart';
+import '../../Utils/navigation.dart';
+import '../../const/app_colors.dart';
+import '../../provider/auth_provider.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);

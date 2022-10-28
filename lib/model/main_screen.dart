@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pro_course_app/course_list.dart';
+import 'package:pro_course_app/view/course/course_list.dart';
 import 'package:pro_course_app/model/user_list.dart';
 
 class CouseMainScreen extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 
 import 'package:flutter/material.dart';
 import 'package:pro_course_app/const/app_colors.dart';
-import 'package:pro_course_app/view/textfieldlog.dart';
+import 'package:pro_course_app/Utils/textfieldlog.dart';
 import 'package:provider/provider.dart';
 
 import '../../Utils/custo_drawer.dart';
@@ -47,7 +47,7 @@ class SaveCourseInfo extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            TextFieldLog(
+            CustomTextField(
                 title: "Title",
                 icon: const Icon(
                   Icons.bookmark,
@@ -55,7 +55,7 @@ class SaveCourseInfo extends StatelessWidget {
                 ),
                 controller: title,
                 textInputType: TextInputType.text),
-            TextFieldLog(
+            CustomTextField(
                 title: "Description",
                 icon: const Icon(
                   Icons.description,
@@ -63,7 +63,7 @@ class SaveCourseInfo extends StatelessWidget {
                 ),
                 controller: description,
                 textInputType: TextInputType.text),
-            TextFieldLog(
+            CustomTextField(
                 title: "PdfUrl",
                 icon: const Icon(
                   Icons.picture_as_pdf,
@@ -71,7 +71,7 @@ class SaveCourseInfo extends StatelessWidget {
                 ),
                 controller: pdfurl,
                 textInputType: TextInputType.text),
-            TextFieldLog(
+            CustomTextField(
                 title: "Star Rating",
                 icon: const Icon(
                   Icons.star,

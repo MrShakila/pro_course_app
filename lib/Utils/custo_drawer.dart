@@ -3,17 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
-import 'package:pro_course_app/Utils/util.dart';
+import 'package:pro_course_app/Utils/navigation.dart';
 import 'package:pro_course_app/const/app_colors.dart';
 import 'package:pro_course_app/provider/auth_provider.dart';
-import 'package:pro_course_app/view/home_page.dart';
+import 'package:pro_course_app/view/home/home_page.dart';
 import 'package:pro_course_app/view/login/signin.dart';
-import 'package:pro_course_app/view/profile._page.dart';
+import 'package:pro_course_app/view/home/profile._page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../const/fire_base_const.dart';
-import '../view/login/login_page.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({

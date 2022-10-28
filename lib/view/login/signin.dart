@@ -5,14 +5,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pro_course_app/Utils/loading_indicator.dart';
-import 'package:pro_course_app/Utils/util.dart';
+import 'package:pro_course_app/Utils/navigation.dart';
 import 'package:pro_course_app/const/app_colors.dart';
 import 'package:pro_course_app/view/login/signup.dart';
 import 'package:provider/provider.dart';
 import '../../Utils/common_widget.dart';
 import '../../Utils/component.dart';
 import '../../provider/auth_provider.dart';
-import '../home_page.dart';
+import '../home/home_page.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);

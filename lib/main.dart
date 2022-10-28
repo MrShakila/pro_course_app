@@ -10,7 +10,7 @@ import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/provider/chat_provider.dart';
 import 'package:pro_course_app/provider/home_provider.dart';
 import 'package:pro_course_app/provider/profile_provider.dart';
-import 'package:pro_course_app/view/splash_screen.dart';
+import 'package:pro_course_app/view/home/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

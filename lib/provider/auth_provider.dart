@@ -61,13 +61,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  agecalculate(String age) {
-    int patientage = int.parse(age);
-    int today = int.parse(DateTime.now().year.toString());
-    int hisage = today - patientage;
-    return hisage;
-  }
-
   Future<bool> handleGoogleSignIn() async {
     setIsLOading(true);
     _status = Status.authenticating;
@@ -235,7 +228,7 @@ class AuthProvider extends ChangeNotifier {
             FirestoreConstants.id: user.uid,
             FirestoreConstants.address: "$latitude $logitude",
             FirestoreConstants.birthDay: birthday,
-            FirestoreConstants.age: agecalculate(age),
+            FirestoreConstants.age: age,
             FirestoreConstants.school: school,
             FirestoreConstants.createdAt:
                 DateTime.now().millisecondsSinceEpoch.toString(),
