@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pro_course_app/Utils/navigation.dart';
 import 'package:provider/provider.dart';
 
 import '../../admin/save_course_detail.dart';
+import '../../view/course/pdfview.dart';
 
 class DetailWidget extends StatelessWidget {
   final String title;
@@ -53,7 +56,7 @@ class DetailWidget extends StatelessWidget {
                               flex: 3,
                               child: Text(
                                 title,
-                                style: const TextStyle(
+                                style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.bold, fontSize: 25),
                               ),
                             ),
@@ -90,13 +93,27 @@ class DetailWidget extends StatelessWidget {
                         ),
                         Text(
                           desc,
-                          style: const TextStyle(
+                          style: GoogleFonts.roboto(
                               fontWeight: FontWeight.normal, fontSize: 15),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        const Center(child: Text("View Syllabus")),
+                        Center(
+                            child: Row(
+                          children: [
+                            const Text("View Syllabus"),
+                            IconButton(
+                                onPressed: () {
+                                  UtilFunctions.navigateTo(
+                                      context,
+                                      PdfViewScreen(
+                                        url: pdfurl,
+                                      ));
+                                },
+                                icon: const Icon(Icons.arrow_forward))
+                          ],
+                        )),
                         const SizedBox(
                           height: 10,
                         ),

@@ -28,13 +28,12 @@ class _CourseDetailMainState extends State<CourseDetailMain> {
           selectedItemColor: Colors.black38,
           items: _buildThreeItems(),
           onTap: (int index) {
-            setState(() {
-              pageController.animateToPage(
-                index,
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeInOut,
-              );
-            });
+            pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+            );
+
             pageController.animateToPage(
               index,
               duration: const Duration(milliseconds: 200),

@@ -6,6 +6,7 @@ import 'package:pro_course_app/Utils/custo_drawer.dart';
 import 'package:pro_course_app/const/app_colors.dart';
 import 'package:pro_course_app/view/course/mycourse_list.dart';
 import 'package:pro_course_app/view/chat/chat_list.dart';
+import 'package:pro_course_app/view/home/home.dart';
 import 'package:pro_course_app/view/login/signin.dart';
 import 'package:provider/provider.dart';
 
@@ -16,14 +17,14 @@ import '../../provider/auth_provider.dart';
 import '../../provider/home_provider.dart';
 import '../course/add_new_course.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MainPageState extends State<MainPage> {
   late AuthProvider authProvider;
   late String currentUserId;
   late HomeProvider homeProvider;
@@ -110,7 +111,8 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: _buildThreeItems(),
-          selectedItemColor: Colors.black38,
+          selectedItemColor: Colors.blueGrey,
+          unselectedItemColor: Colors.grey,
           onTap: (int index) {
             setState(() {
               pageController.animateToPage(
@@ -140,6 +142,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> _buildThreePageViewChildren() {
     return <Widget>[
+      const HomeScreen(),
       const CourseList(),
       MyCourseList(userid: currentUserId),
       const ChatList()
@@ -151,6 +154,10 @@ class _HomePageState extends State<HomePage> {
       BottomNavigationBarItem(
         icon: Icon(Icons.home),
         label: 'Home Page',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.bolt),
+        label: 'New Courses',
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.laptop),

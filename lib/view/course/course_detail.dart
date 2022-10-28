@@ -1,13 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pro_course_app/Utils/loading_indicator.dart';
-import 'package:pro_course_app/Utils/navigation.dart';
-import 'package:pro_course_app/admin/save_course_detail.dart';
-import 'package:pro_course_app/view/course/pdfview.dart';
-import 'package:provider/provider.dart';
 
 import '../../Utils/Widget/coursedetail.dart';
-import 'studentlist.dart';
 
 class CourseDetail extends StatefulWidget {
   final String courseid;

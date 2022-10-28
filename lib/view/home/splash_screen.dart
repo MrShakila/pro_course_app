@@ -29,7 +29,7 @@ class _SplashPageState extends State<SplashPage> {
     AuthProvider authProvider = context.read<AuthProvider>();
     bool isLoggedIn = await authProvider.isLoggedIn();
     if (isLoggedIn) {
-      UtilFunctions.pushRemoveNavigation(context, const HomePage());
+      UtilFunctions.pushRemoveNavigation(context, const MainPage());
       return;
     }
     UtilFunctions.pushRemoveNavigation(context, const SignIn());

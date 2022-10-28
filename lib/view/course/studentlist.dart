@@ -23,7 +23,7 @@ class StudentLIst extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CustomLoading();
+          return const Center(child: CustomLoading());
         }
 
         return ListView(
@@ -32,7 +32,7 @@ class StudentLIst extends StatelessWidget {
           if (data['user'] != '') {
             return getUsers(data['user']);
           } else {
-            return const Text("No Students");
+            return Container();
           }
         }).toList());
       },
@@ -81,7 +81,7 @@ Widget getUsers(String id) {
         );
       }
 
-      return const CustomLoading();
+      return Container();
     },
   );
 }

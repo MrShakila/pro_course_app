@@ -93,7 +93,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
           onTap: () {
             Navigator.pop(context);
-            UtilFunctions.navigateTo(context, const HomePage());
+            UtilFunctions.navigateTo(context, const MainPage());
           },
         ),
         ListTile(

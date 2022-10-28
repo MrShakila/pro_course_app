@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import '../../Utils/Widget/formtextfield.dart';
 import '../../Utils/common_widget.dart';
 import '../../Utils/component.dart';
 import '../../Utils/navigation.dart';
@@ -236,7 +237,7 @@ class _SignUpState extends State<SignUp> {
                       if (isSuccess) {
                         // ignore: use_build_context_synchronously
                         UtilFunctions.pushRemoveNavigation(
-                            context, const HomePage());
+                            context, const MainPage());
                       } else {
                         // ignore: use_build_context_synchronously
                         alertDialog(

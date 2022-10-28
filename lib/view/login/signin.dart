@@ -9,6 +9,7 @@ import 'package:pro_course_app/Utils/navigation.dart';
 import 'package:pro_course_app/const/app_colors.dart';
 import 'package:pro_course_app/view/login/signup.dart';
 import 'package:provider/provider.dart';
+import '../../Utils/Widget/formtextfield.dart';
 import '../../Utils/common_widget.dart';
 import '../../Utils/component.dart';
 import '../../provider/auth_provider.dart';
@@ -105,7 +106,7 @@ class _SignInState extends State<SignIn> {
                                       if (isSuccess) {
                                         // ignore: use_build_context_synchronously
                                         UtilFunctions.pushRemoveNavigation(
-                                            context, const HomePage());
+                                            context, const MainPage());
                                       } else {
                                         // ignore: use_build_context_synchronously
                                         alertDialog(
@@ -134,7 +135,7 @@ class _SignInState extends State<SignIn> {
                                 if (isSuccess) {
                                   // ignore: use_build_context_synchronously
                                   UtilFunctions.pushRemoveNavigation(
-                                      context, const HomePage());
+                                      context, const MainPage());
                                 }
                               },
                               child: Center(
