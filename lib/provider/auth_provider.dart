@@ -45,6 +45,13 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  agecalculate(String age) {
+    int patientage = int.parse(age);
+    int today = int.parse(DateTime.now().year.toString());
+    int hisage = today - patientage;
+    return hisage;
+  }
+
   Future<bool> handleGoogleSignIn() async {
     _status = Status.authenticating;
     notifyListeners();
@@ -210,7 +217,7 @@ class AuthProvider extends ChangeNotifier {
             FirestoreConstants.chattingWith: null
           });
 
-          User? currentUser = user;
+          User currentUser = user;
           await prefs.setString(FirestoreConstants.id, currentUser.uid);
           await prefs.setString(
               FirestoreConstants.displayName, currentUser.displayName ?? "");
@@ -237,6 +244,15 @@ class AuthProvider extends ChangeNotifier {
         return false;
       }
     } on Exception {
+      return false;
+    }
+  }
+
+  Future<bool> sendresetemail(String email) async {
+    var result = firebaseAuth.sendPasswordResetEmail(email: email);
+    if (result != null) {
+      return true;
+    } else {
       return false;
     }
   }

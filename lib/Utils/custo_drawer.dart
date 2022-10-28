@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pro_course_app/Utils/util.dart';
+import 'package:pro_course_app/const/app_colors.dart';
 import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/view/home_page.dart';
 import 'package:pro_course_app/view/profile._page.dart';
@@ -46,7 +47,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   late AuthProvider authProvider;
 
   Future<void> googleSignOut() async {
-    authProvider.googleSignOut();
+    await authProvider.googleSignOut();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
@@ -57,7 +58,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       child: ListView(padding: EdgeInsets.zero, children: [
         UserAccountsDrawerHeader(
           decoration: const BoxDecoration(
-            color: Colors.lightBlue,
+            color: AppColors.indyBlue,
           ),
           currentAccountPicture: ClipRRect(
               borderRadius: BorderRadius.circular(25),

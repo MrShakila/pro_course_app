@@ -25,3 +25,16 @@ class UtilFunctions {
         MaterialPageRoute(builder: (context) => widget), ((route) => false));
   }
 }
+
+
+// FirebaseFirestore.instance
+//         .collection('users')
+//         .where('invitation_code', isEqualTo: inputCode)
+//         .get()
+//         .then((value) {
+//       if (value.docs.isNotEmpty) {
+//         // return true;
+//       } else {
+//         // return false;
+//       }
+//     });

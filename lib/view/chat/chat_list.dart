@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:pro_course_app/const/app_colors.dart';
 import 'package:pro_course_app/model/chat_user.dart';
 import 'package:pro_course_app/const/debouncer.dart';
 

@@ -40,10 +40,16 @@ class Course with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> startSavecourseInfo(
-      BuildContext context, String title, String desc, String price) async {
+  Future<void> startSavecourseInfo(BuildContext context, String title,
+      String desc, int star, String pdfurl) async {
     setIsLOading(true);
-    await _courseController.saveCourseInfo(title, desc, _image);
+    await _courseController.saveCourseInfo(
+      title,
+      desc,
+      pdfurl,
+      star,
+      _image,
+    );
     setIsLOading(false);
     AwesomeDialog(
       context: context,
@@ -59,10 +65,26 @@ class Course with ChangeNotifier {
   Future<void> addNewStudentToCourse(
       BuildContext context, String courseid) async {
     setIsLOading(true);
-    await _courseController.adduserstocourse(
+    bool isEnrolled = await _courseController.checkuserenroled(
       courseid,
     );
-    setIsLOading(false);
+    if (isEnrolled) {
+      await _courseController.adduserstocourse(
+        courseid,
+      );
+      setIsLOading(false);
+    } else {
+      setIsLOading(false);
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.error,
+        animType: AnimType.bottomSlide,
+        title: 'Error',
+        desc: 'You Already Enrolled This Course',
+        btnOkOnPress: () {},
+      ).show();
+    }
+
     AwesomeDialog(
       context: context,
       dialogType: DialogType.success,

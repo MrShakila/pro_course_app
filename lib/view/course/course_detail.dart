@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pro_course_app/Utils/custo_drawer.dart';
+import 'package:pro_course_app/Utils/loading_indicator.dart';
 import 'package:pro_course_app/Utils/util.dart';
 import 'package:pro_course_app/admin/save_course_detail.dart';
 import 'package:pro_course_app/view/course/pdfview.dart';
 import 'package:provider/provider.dart';
 
+import '../../const/app_colors.dart';
 import '../../studentlist.dart';
 
 class CourseDetail extends StatefulWidget {
@@ -25,41 +28,62 @@ class _CourseDetailState extends State<CourseDetail> {
     CollectionReference users = FirebaseFirestore.instance.collection('course');
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+        drawer: const CustomDrawer(),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Builder(
+            builder: (context) {
+              return IconButton(
+                icon: const Icon(Icons.menu, color: AppColors.indyBlue),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              );
+            },
+          ),
+          centerTitle: true,
+          title: const Text(
+            'Pro Course App',
+            style: TextStyle(color: AppColors.indyBlue),
+          ),
+        ),
         body: FutureBuilder<DocumentSnapshot>(
-      future: users.doc(widget.courseid).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return const Text("Something went wrong");
-        }
+          future: users.doc(widget.courseid).get(),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const Text("Something went wrong");
+            }
 
-        if (snapshot.hasData && !snapshot.data!.exists) {
-          return const Text("Document does not exist");
-        }
+            if (snapshot.hasData && !snapshot.data!.exists) {
+              return const Text("Document does not exist");
+            }
 
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
-          return DetailWidget(
-              size: size,
-              title: data['title'],
-              desc: data['description'],
-              imag: data['imageUrl'],
-              id: widget.courseid,
-              star: 4.5);
-        }
+            if (snapshot.connectionState == ConnectionState.done) {
+              Map<String, dynamic> data =
+                  snapshot.data!.data() as Map<String, dynamic>;
+              return DetailWidget(
+                  pdfurl: data['pdfurl'],
+                  size: size,
+                  title: data['title'],
+                  desc: data['description'],
+                  imag: data['imageUrl'],
+                  id: widget.courseid,
+                  star: 4.5);
+            }
 
-        return const Text("loading");
-      },
-    ));
+            return const CustomLoading();
+          },
+        ));
   }
 }
 
 class DetailWidget extends StatelessWidget {
   final String title;
-
   final String desc;
   final String imag;
+  final String pdfurl;
   final double star;
   final String id;
   const DetailWidget({
@@ -70,129 +94,130 @@ class DetailWidget extends StatelessWidget {
     required this.imag,
     required this.id,
     required this.star,
+    required this.pdfurl,
   }) : super(key: key);
 
   final Size size;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: [
-        Container(
-          width: double.infinity,
-          height: size.height,
-          color: Colors.red,
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15))),
-              width: double.infinity,
-              height: size.height / 2,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Expanded(flex: 1, child: Image.network(imag)),
+        Expanded(
+          flex: 1,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: SingleChildScrollView(
+              child: Container(
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15))),
+                  width: double.infinity,
+                  height: size.height / 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          flex: 3,
-                          child: Text(
-                            title,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 25),
-                          ),
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: Row(
-                              children: [
-                                Stack(
-                                  children: const [
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.black,
-                                      size: 27,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                title,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 25),
+                              ),
+                            ),
+                            Expanded(
+                                flex: 1,
+                                child: Row(
+                                  children: [
+                                    Stack(
+                                      children: const [
+                                        Icon(
+                                          Icons.star,
+                                          color: Colors.black,
+                                          size: 27,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: Colors.yellow,
+                                          size: 25,
+                                        ),
+                                      ],
                                     ),
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.yellow,
-                                      size: 25,
-                                    ),
+                                    Text(
+                                      star.toString(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    )
                                   ],
-                                ),
-                                Text(
-                                  star.toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                )
-                              ],
-                            ))
+                                ))
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          desc,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.normal, fontSize: 15),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  UtilFunctions.navigateTo(
+                                      context, PdfViewScreen(url: pdfurl));
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text("Open Pdf"),
+                                )),
+                            ElevatedButton(
+                                onPressed: () {
+                                  UtilFunctions.navigateTo(
+                                      context,
+                                      StudentLIst(
+                                        courseid: id,
+                                      ));
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text("Students"),
+                                )),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Center(child: Consumer<Course>(
+                          builder: (context, value, child) {
+                            return ElevatedButton(
+                                onPressed: () {
+                                  value.addNewStudentToCourse(context, id);
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text("Enroll Now"),
+                                ));
+                          },
+                        ))
                       ],
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      desc,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.normal, fontSize: 15),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          UtilFunctions.navigateTo(
-                              context,
-                              const PdfViewScreen(
-                                  url:
-                                      "https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf"));
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("View More Details"),
-                        )),
-                    ElevatedButton(
-                        onPressed: () {
-                          UtilFunctions.navigateTo(
-                              context,
-                              StudentLIst(
-                                courseid: id,
-                              ));
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("GOTO sTUENT LIST"),
-                        )),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Center(child: Consumer<Course>(
-                      builder: (context, value, child) {
-                        return ElevatedButton(
-                            onPressed: () {
-                              value.addNewStudentToCourse(
-                                context,
-                                id,
-                              );
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text("Enroll Now"),
-                            ));
-                      },
-                    ))
-                  ],
-                ),
-              )),
+                  )),
+            ),
+          ),
         ),
       ],
     );

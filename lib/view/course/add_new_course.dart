@@ -1,9 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 import 'package:flutter/material.dart';
+import 'package:pro_course_app/const/app_colors.dart';
 import 'package:pro_course_app/view/textfieldlog.dart';
 import 'package:provider/provider.dart';
 
+import '../../Utils/custo_drawer.dart';
 import '../../admin/save_course_detail.dart';
 
 class SaveCourseInfo extends StatelessWidget {
@@ -12,29 +14,36 @@ class SaveCourseInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final description = TextEditingController();
-    final price = TextEditingController();
+    final star = TextEditingController();
+    final pdfurl = TextEditingController();
     final title = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(),
+      drawer: const CustomDrawer(),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu, color: AppColors.indyBlue),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+        actions: const [],
+        centerTitle: true,
+        title: const Text(
+          'Add New Course Details',
+          style: TextStyle(color: AppColors.indyBlue),
+        ),
+      ),
       backgroundColor: Colors.grey[300],
-      body: Center(
+      body: Container(
         child: SingleChildScrollView(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Icon(
-              Icons.anchor,
-              size: 50,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              "Save Course Details",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
-            ),
             const SizedBox(
               height: 20,
             ),
@@ -55,12 +64,20 @@ class SaveCourseInfo extends StatelessWidget {
                 controller: description,
                 textInputType: TextInputType.text),
             TextFieldLog(
-                title: "Price",
+                title: "PdfUrl",
                 icon: const Icon(
-                  Icons.price_check,
+                  Icons.upload_rounded,
                   color: Colors.black,
                 ),
-                controller: price,
+                controller: pdfurl,
+                textInputType: TextInputType.text),
+            TextFieldLog(
+                title: "Star Rating",
+                icon: const Icon(
+                  Icons.star,
+                  color: Colors.black,
+                ),
+                controller: star,
                 textInputType: TextInputType.number),
             Consumer<Course>(
               builder: (context, value, child) {
@@ -87,7 +104,8 @@ class SaveCourseInfo extends StatelessWidget {
                         onTap: () {
                           value.selectImage();
                         },
-                        child: Image.file(value.getImage));
+                        child: SizedBox(
+                            height: 100, child: Image.file(value.getImage)));
               },
             ),
             const SizedBox(
@@ -111,12 +129,17 @@ class SaveCourseInfo extends StatelessWidget {
                       } else {
                         if (title.text.isNotEmpty &&
                             description.text.isNotEmpty &&
-                            price.text.isNotEmpty) {
-                          value.startSavecourseInfo(context, title.text.trim(),
-                              description.text.trim(), price.text.trim());
+                            star.text.isNotEmpty) {
+                          value.startSavecourseInfo(
+                            context,
+                            title.text.trim(),
+                            description.text.trim(),
+                            4,
+                            pdfurl.text,
+                          );
                           title.clear();
                           description.clear();
-                          price.clear();
+                          star.clear();
 
                           imageCache.clear();
                         } else {

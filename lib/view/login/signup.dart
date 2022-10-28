@@ -27,6 +27,9 @@ class _SignUpState extends State<SignUp> {
         _firstname.text.isEmpty ||
         _lastname.text.isEmpty ||
         _school.text.isEmpty ||
+        birthday.isEmpty ||
+        latitude.isEmpty ||
+        longitude.isEmpty ||
         _phonenumber.text.isEmpty ||
         _password.text.isEmpty ||
         _repeatpasswordord.text.isEmpty) {
@@ -47,7 +50,7 @@ class _SignUpState extends State<SignUp> {
     } else if (_password.text != _repeatpasswordord.text) {
       alertDialog(
           context, "Password didnt match", "Please enter valid passowrd");
-      return true;
+      return false;
     } else {
       return true;
     }

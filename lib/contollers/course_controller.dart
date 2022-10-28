@@ -33,6 +33,33 @@ class CourseController {
     //hold
   }
 
+  Future<bool> checkuserenroled(String courseid) async {
+    //uploading the image
+    //get an online doc id
+
+    //saving course details to cloud store
+    try {
+      await FirebaseFirestore.instance
+          .collection('course')
+          .doc(courseid)
+          .collection("students")
+          .where('user', isEqualTo: user!.uid)
+          .get()
+          .then((value) {
+        print(value);
+        if (value.docs.isNotEmpty) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    } on Exception catch (e) {
+      Logger().e(e);
+    }
+    return true;
+    //hold
+  }
+
   //upload picked iamge file to firebase storage
   UploadTask? uploadFile(File img) {
     try {
@@ -52,6 +79,8 @@ class CourseController {
   Future<void> saveCourseInfo(
     String title,
     String desc,
+    String pdfurl,
+    int star,
     File img,
   ) async {
     //uploading the image
@@ -67,6 +96,8 @@ class CourseController {
       'id': docId,
       'title': title,
       'description': desc,
+      'star': star,
+      'pdfurl': pdfurl,
       'imageUrl': downloadUrl
     });
 

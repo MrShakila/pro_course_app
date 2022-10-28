@@ -1,7 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/Material.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:pro_course_app/Utils/custo_drawer.dart';
+import 'package:pro_course_app/const/app_colors.dart';
 import 'package:pro_course_app/view/chat/chat_list.dart';
 import 'package:provider/provider.dart';
 
@@ -78,11 +80,23 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         drawer: const CustomDrawer(),
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Builder(
+            builder: (context) {
+              return IconButton(
+                icon: const Icon(Icons.menu, color: AppColors.indyBlue),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              );
+            },
+          ),
           actions: [
             Consumer<Course>(
               builder: (context, value, child) {
                 return IconButton(
-                  icon: const Icon(Icons.upload),
+                  icon: const Icon(Icons.upload, color: AppColors.indyBlue),
                   onPressed: () {
                     UtilFunctions.navigateTo(context, const SaveCourseInfo());
                   },
@@ -91,7 +105,10 @@ class _HomePageState extends State<HomePage> {
             )
           ],
           centerTitle: true,
-          title: const Text('Pro Course App'),
+          title: const Text(
+            'Pro Course App',
+            style: TextStyle(color: AppColors.indyBlue),
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: _buildThreeItems(),
@@ -106,20 +123,19 @@ class _HomePageState extends State<HomePage> {
           fixedColor: Theme.of(context).primaryColor,
         ),
         body: WillPopScope(
-          onWillPop: initBackButton,
-          child: PageView(
-            controller: pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            onPageChanged: (int index) {
-              setState(
-                () {
-                  pageIndex = index;
-                },
-              );
-            },
-            children: _buildThreePageViewChildren(),
-          ),
-        ));
+            onWillPop: initBackButton,
+            child: PageView(
+              controller: pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              onPageChanged: (int index) {
+                setState(
+                  () {
+                    pageIndex = index;
+                  },
+                );
+              },
+              children: _buildThreePageViewChildren(),
+            )));
   }
 
   List<Widget> _buildThreePageViewChildren() {

@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pro_course_app/admin/save_course_detail.dart';
+import 'package:pro_course_app/const/apptheme.dart';
 import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/provider/chat_provider.dart';
 import 'package:pro_course_app/provider/home_provider.dart';
@@ -58,10 +59,11 @@ class MyApp extends StatelessWidget {
                 firebaseStorage: firebaseStorage,
                 firebaseFirestore: firebaseFirestore))
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'ProAcademy Couse App',
-        home: SplashPage(),
+        home: const SplashPage(),
+        theme: appTheme,
       ),
     );
   }

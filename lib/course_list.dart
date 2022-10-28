@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pro_course_app/Utils/loading_indicator.dart';
 import 'package:pro_course_app/Utils/util.dart';
 import 'package:pro_course_app/view/course/course_detail.dart';
 
@@ -25,7 +26,7 @@ class _CourseListState extends State<CourseList> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading");
+          return const CustomLoading();
         }
 
         return ListView(
@@ -33,12 +34,7 @@ class _CourseListState extends State<CourseList> {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
             print(data);
-            return CourseLisItem(
-              id: data['id'],
-              desc: data['description'],
-              title: data['title'],
-              star: 4,
-            );
+            return CustomListItem(data: data);
           }).toList(),
         );
       },
@@ -46,62 +42,59 @@ class _CourseListState extends State<CourseList> {
   }
 }
 
-class CourseLisItem extends StatelessWidget {
-  final String title;
-  final String desc;
-  final String id;
-  final int star;
-
-  const CourseLisItem({
+class CustomListItem extends StatelessWidget {
+  const CustomListItem({
     Key? key,
-    required this.title,
-    required this.desc,
-    required this.star,
-    required this.id,
+    required this.data,
   }) : super(key: key);
+
+  final Map<String, dynamic> data;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        UtilFunctions.navigateTo(
-            context,
-            CourseDetail(
-              courseid: id,
-            ));
+        UtilFunctions.navigateTo(context, CourseDetail(courseid: data["id"]));
       },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.green, borderRadius: BorderRadius.circular(25)),
-          width: double.infinity,
-          height: 100,
+      child: SizedBox(
+        height: 100,
+        child: Card(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      title,
-                      style: GoogleFonts.roboto(
-                          fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.star,
-                          color: Colors.yellow,
-                        ),
-                        Text(star.toString()),
-                      ],
-                    )
-                  ],
+                Expanded(flex: 1, child: Image.network(data['imageUrl'])),
+                const SizedBox(
+                  width: 5,
                 ),
-                Text(desc)
+                Expanded(
+                  flex: 8,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          data["title"],
+                          style: GoogleFonts.roboto(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          data["description"],
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.roboto(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

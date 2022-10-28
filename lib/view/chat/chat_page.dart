@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:pro_course_app/Utils/custo_drawer.dart';
 import 'package:pro_course_app/provider/auth_provider.dart';
 import 'package:pro_course_app/model/chat_messege_model.dart';
 import 'package:pro_course_app/provider/chat_provider.dart';
 import 'package:pro_course_app/provider/profile_provider.dart';
 import 'package:pro_course_app/const/size.dart';
-import 'package:pro_course_app/const/text_field_constant.dart';
 import 'package:provider/provider.dart';
 
 import 'package:url_launcher/url_launcher_string.dart';
@@ -205,9 +205,27 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const CustomDrawer(),
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu, color: AppColors.indyBlue),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
         centerTitle: true,
-        title: Text(widget.peerNickname.trim()),
+        title: Text(
+          widget.peerNickname.trim(),
+          style: const TextStyle(
+            color: AppColors.indyBlue,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -218,7 +236,10 @@ class _ChatPageState extends State<ChatPage> {
                       "";
               _callPhoneNumber(callPhoneNumber);
             },
-            icon: const Icon(Icons.phone),
+            icon: const Icon(
+              Icons.phone,
+              color: AppColors.indyBlue,
+            ),
           ),
         ],
       ),
@@ -245,7 +266,7 @@ class _ChatPageState extends State<ChatPage> {
           Container(
             margin: const EdgeInsets.only(right: Sizes.dimen_4),
             decoration: BoxDecoration(
-              color: AppColors.burgundy,
+              color: AppColors.indyBlue,
               borderRadius: BorderRadius.circular(Sizes.dimen_30),
             ),
             child: IconButton(
@@ -258,22 +279,32 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           Flexible(
-              child: TextField(
-            focusNode: focusNode,
-            textInputAction: TextInputAction.send,
-            keyboardType: TextInputType.text,
-            textCapitalization: TextCapitalization.sentences,
-            controller: textEditingController,
-            decoration:
-                kTextInputDecoration.copyWith(hintText: 'write here...'),
-            onSubmitted: (value) {
-              onSendMessage(textEditingController.text, MessageType.text);
-            },
-          )),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(color: Colors.black)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    focusNode: focusNode,
+                    textInputAction: TextInputAction.send,
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.sentences,
+                    controller: textEditingController,
+                    decoration:
+                        const InputDecoration.collapsed(hintText: "Type Here"),
+                    onSubmitted: (value) {
+                      onSendMessage(
+                          textEditingController.text, MessageType.text);
+                    },
+                  ),
+                )),
+          ),
           Container(
             margin: const EdgeInsets.only(left: Sizes.dimen_4),
             decoration: BoxDecoration(
-              color: AppColors.burgundy,
+              color: AppColors.indyBlue,
               borderRadius: BorderRadius.circular(Sizes.dimen_30),
             ),
             child: IconButton(
@@ -301,62 +332,68 @@ class _ChatPageState extends State<ChatPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                chatMessages.type == MessageType.text
-                    ? messageBubble(
-                        isSender: true,
-                        chatContent: chatMessages.content,
-                        color: AppColors.spaceLight,
-                        textColor: AppColors.white,
-                        margin: const EdgeInsets.only(right: Sizes.dimen_10),
-                      )
-                    : chatMessages.type == MessageType.image
-                        ? Container(
-                            margin: const EdgeInsets.only(
-                                right: Sizes.dimen_10, top: Sizes.dimen_10),
-                            child: chatImage(
-                                imageSrc: chatMessages.content, onTap: () {}),
-                          )
-                        : const SizedBox.shrink(),
-                isMessageSent(index)
-                    ? Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(Sizes.dimen_20),
+                Expanded(
+                  flex: 8,
+                  child: chatMessages.type == MessageType.text
+                      ? messageBubble(
+                          isSender: true,
+                          chatContent: chatMessages.content,
+                          color: AppColors.spaceLight,
+                          textColor: AppColors.white,
+                          margin: const EdgeInsets.only(right: Sizes.dimen_10),
+                        )
+                      : chatMessages.type == MessageType.image
+                          ? Container(
+                              margin: const EdgeInsets.only(
+                                  right: Sizes.dimen_10, top: Sizes.dimen_10),
+                              child: chatImage(
+                                  imageSrc: chatMessages.content, onTap: () {}),
+                            )
+                          : const SizedBox.shrink(),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: isMessageSent(index)
+                      ? Container(
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(Sizes.dimen_20),
+                          ),
+                          child: Image.network(
+                            "https://thispersondoesnotexist.com/image",
+                            // widget.userAvatar,
+                            width: Sizes.dimen_40,
+                            height: Sizes.dimen_40,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext ctx, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.burgundy,
+                                  value: loadingProgress.expectedTotalBytes !=
+                                              null &&
+                                          loadingProgress.expectedTotalBytes !=
+                                              null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, object, stackTrace) {
+                              return const Icon(
+                                Icons.account_circle,
+                                size: 35,
+                                color: AppColors.greyColor,
+                              );
+                            },
+                          ),
+                        )
+                      : Container(
+                          width: 35,
                         ),
-                        child: Image.network(
-                          "https://thispersondoesnotexist.com/image",
-                          // widget.userAvatar,
-                          width: Sizes.dimen_40,
-                          height: Sizes.dimen_40,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (BuildContext ctx, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: AppColors.burgundy,
-                                value: loadingProgress.expectedTotalBytes !=
-                                            null &&
-                                        loadingProgress.expectedTotalBytes !=
-                                            null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                          errorBuilder: (context, object, stackTrace) {
-                            return const Icon(
-                              Icons.account_circle,
-                              size: 35,
-                              color: AppColors.greyColor,
-                            );
-                          },
-                        ),
-                      )
-                    : Container(
-                        width: 35,
-                      ),
+                ),
               ],
             ),
             isMessageSent(index)
